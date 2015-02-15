@@ -1,0 +1,34 @@
+
+shortcuts / hotkeys in visual studio (or at least with resharper):
+ - auto. indent: ctrl + k + d
+ - comment: mark text and press ctrl + k + c
+ - uncomment: mark text and press ctrl + k + u
+ - start: F5
+ - build / rebuild: F6
+ - set breakpoint: F9
+ - step to next line: F10
+ - step into a method or step to next line: F11
+ - go to the origin or 1.) if the origin is one of the visual studio references or 2.) it's an extern ones go to the object broweser:
+ 	press ctrl + click at the word 
+
+
+ set an onther projekt as startup:
+ right click on the other project and click on 'set as StartUp Project'
+
+
+shortcuts in browser for the developer tool:
+ - open developer tool: F12
+
+ for debugging javascript in the developer tool:
+ - step to next breakpoint or end : F8
+ - step to next line: F10
+
+
+file 'erstelle_mastershop20.sql' contains only the db and the tables no entries
+-> use the MasterShopDb20.GetDataTool to get some entries
+-> the tool has the website as reference, so you have to buils the website first, if you haven't build it
+
+
+shortcuts with resharper:
+ - rename sth: ctrl + r + r
+ - get suggestions from resharper: mark sth and press alt + enter - press alt + enter again to use the suggestion

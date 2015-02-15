@@ -1,0 +1,43 @@
+﻿@model MasterShop20.Website.Models.Login
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+
+    <div class="container">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">mastershop20</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <div class="form-group">
+
+                @* one of a lot options for making a formular using razor *@
+
+                @Html.BeginForm("Login", "Account", FormMethod.Post)
+
+                @Html.TextBox("mailaddress", "E-Mail Adresse eingeben")
+                @Html.Password("password", "Passwort")
+
+                <input type="submit" value="einloggen" class="btn btn-success">
+
+                @{Html.EndForm();}
+
+            </div>
+
+
+            @* html - variante:
+            
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="email" placeholder="Email" class="form-control">
+                    <input type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+            </form>            
+*@
+
+        </div>
+    </div>
+</nav>

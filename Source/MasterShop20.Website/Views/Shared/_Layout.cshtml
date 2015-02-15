@@ -6,9 +6,52 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bootstrap/style/stuff")
+
 </head>
+
+
 <body>
-    @RenderBody()
+
+    <div class="container">
+
+        <div class="row">
+
+            @* navigation above the content is renderd in its own section and it's not required
+        so if I wanna set a navigation on the actuall page, I have to call the 
+        section -> look at the index view to see how you call it *@
+
+            <div class="col-xs-12">
+                @RenderSection("navigation", required: false)
+            </div>
+
+            @* menu on the left side is also renderd in its own section, it won't be needed all the time *@
+
+            <div class="col-md-1" style="margin-top: 25px;">
+                @RenderSection("menu", required: false)
+            </div>
+
+            @* thats the body -> content will be rendered here *@
+
+
+            <div class="col-md-10" style="margin-top: 30px;">
+                @RenderBody()
+            </div>
+
+            <div class="col-md-1"></div>
+
+        </div>
+
+
+        <div class="col-xs-12">
+            <footer>
+                <p>© Company 2014</p>
+            </footer>
+        </div>
+
+    </div>
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
