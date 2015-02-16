@@ -18,6 +18,9 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool CheckLoginData(Login login)
         {
+            if (!_msdc.Nutzers.Any())
+                return false;
+
             var exits =
                 _msdc.Nutzers.Any(
                     p =>
@@ -30,6 +33,10 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool CheckRegistrationData(Registration regist)
         {
+
+            if (!_msdc.Nutzers.Any())
+                return false;
+
             var exists = _msdc.Nutzers.Any(
                 p =>
                     p.Vorname.Equals(regist.FirstName, StringComparison.InvariantCultureIgnoreCase) &&

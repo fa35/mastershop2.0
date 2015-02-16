@@ -40,7 +40,7 @@ namespace MasterShop20.GetDataTool.Infrastructure
             decimal bruttopreis = 0m;
             decimal.TryParse(brutto, out bruttopreis);
 
-            if (bruttopreis == null || bruttopreis <= 1)
+            if (bruttopreis <= 1)
                 return null;
 
             var netto = (decimal)bruttopreis / 119 * 100;
