@@ -1,0 +1,24 @@
+﻿@model MasterShop20.Website.Database.Nutzer
+
+@{
+    ViewBag.Title = "AccountSettings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AccountSettings</h2>
+
+@section menu{
+
+@*    @Html.Partial("_SettingsOptions", "Options")*@
+
+     @RenderPage("_SettingsOptions.cshtml")
+}
+
+
+<h4>Hallo @Model.Vorname @Model.Name</h4>
+
+
+
+@Html.TextBoxFor(model => model.Name);
+
+@Html.TextBoxFor(model => model.Strasse);
