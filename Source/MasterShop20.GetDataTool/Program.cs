@@ -25,7 +25,9 @@ namespace MasterShop20.GetDataTool
          * wenn wir das nun jedes mal machen müssen, sollten wird connection-string nicht per default eintragen lassen,
          * sondern ihn auslagern, oder wir checken die .dmbl datei nicht mehr mit ein
          */
-
+        
+        // todo: ich werde das nochmal hübscher schreiben ggf. wies ich jetzt wie ich an eine script über die einträge in
+        // der sql-db komme, denn das management studio exportiert irgendwie nur das schema aber nicht die einträge
 
         static void Main(string[] args)
         {
