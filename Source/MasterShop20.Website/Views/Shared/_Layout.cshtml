@@ -45,7 +45,11 @@
 
         <div class="col-xs-12">
             <footer>
-                <p>© Company 2014</p>
+                <p>© mastershop24 - @DateTime.Today.Year 
+                    @Html.ActionLink("Impressum","LegalNotice", "Home")
+                    @Html.ActionLink("Datenschutzerklärung", "PrivacyPolicy", "Home")
+                    @Html.ActionLink("AGBs", "GeneralBusinessTerms", "Home")
+                </p>
             </footer>
         </div>
 

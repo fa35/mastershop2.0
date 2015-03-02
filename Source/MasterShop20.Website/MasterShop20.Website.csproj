@@ -251,6 +251,9 @@
     <Content Include="Views\Shared\Menu.cshtml" />
     <Content Include="Views\Account\AccountSettings.cshtml" />
     <Content Include="Views\Account\_SettingsOptions.cshtml" />
+    <Content Include="Views\Home\PricacyPolicy.cshtml" />
+    <Content Include="Views\Home\LegalNotice.cshtml" />
+    <Content Include="Views\Home\GeneralBusinessTerms.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
