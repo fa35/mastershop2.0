@@ -9,21 +9,21 @@ namespace MasterShop20.Website.Infrastructure
     public class DbOrganizer
     {
 
-        private MasterShopDataContext _msdc;
+        private MasterShopDataContext _datacontext;
 
         public DbOrganizer()
         {
-            _msdc = new MasterShopDataContext();
+            _datacontext = new MasterShopDataContext();
         }
 
 
         public bool CheckLoginData(Login login)
         {
-            if (!_msdc.Nutzers.Any())
+            if (!_datacontext.Nutzers.Any())
                 return false;
 
             var exits =
-                _msdc.Nutzers.Any(
+                _datacontext.Nutzers.Any(
                     p =>
                         p.EMail.Equals(login.MailAddress,
                             StringComparison.InvariantCultureIgnoreCase) && p.Passwort.Equals(login.Password));
@@ -35,10 +35,10 @@ namespace MasterShop20.Website.Infrastructure
         public bool CheckRegistrationData(Registration regist)
         {
 
-            if (!_msdc.Nutzers.Any())
+            if (!_datacontext.Nutzers.Any())
                 return false;
 
-            var exists = _msdc.Nutzers.Any(
+            var exists = _datacontext.Nutzers.Any(
                 p =>
                     p.Vorname.Equals(regist.FirstName, StringComparison.InvariantCultureIgnoreCase) &&
                     p.Name.Equals(regist.LastName, StringComparison.InvariantCultureIgnoreCase) &&
@@ -57,7 +57,7 @@ namespace MasterShop20.Website.Infrastructure
 
         public Nutzer ConvertLoginToNutzer(Login login)
         {
-            var nutzer = _msdc.Nutzers.FirstOrDefault(
+            var nutzer = _datacontext.Nutzers.FirstOrDefault(
                     p =>
                         p.EMail.Equals(login.MailAddress,
                             StringComparison.InvariantCultureIgnoreCase) && p.Passwort.Equals(login.Password));
@@ -82,29 +82,25 @@ namespace MasterShop20.Website.Infrastructure
             nutzer.Vorname = regist.FirstName;
             nutzer.EMail = regist.MailAddress;
 
-            var manager = new SessionManager();
-
-
             try
             {
-                _msdc.Nutzers.InsertOnSubmit(nutzer);
-                _msdc.SubmitChanges();
+                _datacontext.Nutzers.InsertOnSubmit(nutzer);
+                _datacontext.SubmitChanges();
 
-                manager.CreateUserSession(nutzer.IdNutzer);
-
+                new SessionManager().CreateUserSession(nutzer.IdNutzer);
                 return nutzer;
             }
             catch (Exception)
             {
                 return null;
-                // todo:
+                // todo: error logging or what ever
                 throw;
             }
         }
 
         public long? CheckCurrentLogin(int idNutzer)
         {
-            var session = _msdc.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
+            var session = _datacontext.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
             if (session != null)
                 return session.IdSession;
 
@@ -113,7 +109,7 @@ namespace MasterShop20.Website.Infrastructure
 
         public Session GetSessionData(int idNutzer)
         {
-            var session = _msdc.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
+            var session = _datacontext.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
             return session ?? null; // = kurzschreibweise für if(session != null) return session else return null
         }
 
@@ -122,9 +118,15 @@ namespace MasterShop20.Website.Infrastructure
             var articles = new List<Artikel>();
 
             foreach (var id in articleIds)
-                articles.Add(_msdc.Artikels.FirstOrDefault(p => p.IdArtikel == id));
+                articles.Add(_datacontext.Artikels.FirstOrDefault(p => p.IdArtikel == id));
 
             return articles;
         }
+
+        public List<Artikel> GetArticles()
+        {
+            return _datacontext.Artikels.Take(20).ToList();
+        }
+
     }
 }

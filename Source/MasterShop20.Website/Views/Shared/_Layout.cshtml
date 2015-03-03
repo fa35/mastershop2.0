@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>mastersho24</title>
 
     <script type="text/javascript" src="../../Scripts/modernizr-2.6.2.js"></script>
     <link rel="stylesheet" type="text/css" href="../../Content/bootstrap/css/bootstrap-theme.min.css" />
@@ -16,29 +16,22 @@
 
 <body>
 
-    <div class="container">
+    <div class="container col-md-12">
 
         <div class="row">
 
-            @* navigation above the content is renderd in its own section and it's not required
-        so if I wanna set a navigation on the actuall page, I have to call the 
-        section -> look at the index view to see how you call it *@
-
-            <div class="col-xs-12" style="margin-bottom: 20px;">
+            <div class="col-md-12" style="margin-bottom: 20px;">
                 @RenderSection("navigation", required: false)
             </div>
-
-            @* menu on the left side is also renderd in its own section, it won't be needed all the time *@
+            
+            <div class="col-md-1"></div>
 
             <div class="col-md-1" style="margin-top: 25px;">
                 @RenderSection("menu", required: false)
             </div>
 
-            @* thats the body -> content will be rendered here *@
-
-
-            <div class="col-md-10" style="margin-top: 30px;">
-                @RenderBody()
+            <div class="col-md-9" style="margin-top: 30px;">
+                @RenderBody() 
             </div>
 
             <div class="col-md-1"></div>
