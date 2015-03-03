@@ -9,13 +9,7 @@ namespace MasterShop20.Website.Infrastructure
 {
     public class SessionManager
     {
-        public Session GetUserSession(int idNutzer)
-        {
-            using (var context = new MasterShopDataContext())
-            {
-                return context.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
-            }
-        }
+        // todo: diese klasse wird bisher in dborganizer verwendet
 
         public bool AddArticleToUserSession(int idNutzer, int idArtikel)
         {
@@ -26,9 +20,33 @@ namespace MasterShop20.Website.Infrastructure
                 currentList.Add(idArtikel);
                 var content = JsonConvert.SerializeObject(currentList);
                 session.ArtikelInwarenkorb = content;
-
                 context.SubmitChanges();
+                return true;
             }
         }
+
+        public bool CreateUserSession(int idNutzer)
+        {
+            using (var context = new MasterShopDataContext())
+            {
+                if (context.Sessions.Any(p => p.IdNutzer == idNutzer && p.LogoutDateTime == null))
+                    return false;
+
+                var session = new Session {IdNutzer = idNutzer, LoginDateTime = DateTime.Now};
+                try
+                {
+                    context.Sessions.InsertOnSubmit(session);
+                    context.SubmitChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                    throw;
+                }
+            }
+        }
+
+
     }
 }

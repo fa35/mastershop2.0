@@ -9,11 +9,6 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Account/
 
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public ActionResult Login(Login login)
         {
             var organizer = new DbOrganizer();

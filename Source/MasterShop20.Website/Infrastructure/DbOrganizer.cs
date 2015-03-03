@@ -61,6 +61,9 @@ namespace MasterShop20.Website.Infrastructure
                         p.EMail.Equals(login.MailAddress,
                             StringComparison.InvariantCultureIgnoreCase) && p.Passwort.Equals(login.Password));
 
+            if (nutzer != null)
+                new SessionManager().CreateUserSession(nutzer.IdNutzer);
+
             return nutzer;
         }
 
@@ -78,10 +81,16 @@ namespace MasterShop20.Website.Infrastructure
             nutzer.Vorname = regist.FirstName;
             nutzer.EMail = regist.MailAddress;
 
+            var manager = new SessionManager();
+
+
             try
             {
                 _msdc.Nutzers.InsertOnSubmit(nutzer);
                 _msdc.SubmitChanges();
+
+                manager.CreateUserSession(nutzer.IdNutzer);
+                
                 return nutzer;
             }
             catch (Exception)
