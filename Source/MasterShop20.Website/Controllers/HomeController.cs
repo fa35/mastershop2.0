@@ -1,5 +1,8 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using MasterShop20.Website.Database;
 
 namespace MasterShop20.Website.Controllers
 {
@@ -12,7 +15,6 @@ namespace MasterShop20.Website.Controllers
         {
             return View();
         }
-
 
 
         public ActionResult PrivacyPolicy()
