@@ -1,33 +1,37 @@
 ﻿@model MasterShop20.Website.Models.Login
 
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-fixed-top">
 
     <div class="container">
 
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">mastershop20</a>
+        <form action="@{ Html.Action("Login", "Account");}" class="form-horizontal">
+
+            <div class="form-group col-xs-12 nav navbar">
+
+                <img src="../../Content/images/logo_no1.png" alt="mastershop24" class="col-xs-4" />
+                <div style="margin: 15px;">
+                    <div class="col-xs-3">
+                        <input type="text" name="mailaddress" placeholder="E-Mail Adresse" title="E-Mail Adresse" class='form-control' required />
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="text" name="password" placeholder="Passwort" title="Passwort" class="form-control" required />
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="submit" class="btn btn-success" style="float: right">anmelden</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-group col-xs-12 nav navbar-right small">
+            <div class="col-xs-12">
+                Oder @Html.ActionLink("registrieren", "Register", "Account") dich hier, falls du noch keinen Account hast!
+            </div>
         </div>
 
-        <div id="navbar" class="navbar-collapse collapse">
-
-            <div class="form-group">
-
-                @* one of a lot options for making a formular using razor *@
-
-                @Html.BeginForm("Login", "Account", FormMethod.Post)
-
-                @Html.TextBox("mailaddress", "E-Mail Adresse eingeben")
-                @Html.Password("password", "Passwort")
-
-                <input type="submit" value="einloggen" class="btn btn-success">
-
-                @{Html.EndForm();}
-
-            </div>
 
 
-            @* html - variante:
+        @* html - variante:
             
             <form class="navbar-form navbar-right">
                 <div class="form-group">
@@ -36,8 +40,8 @@
                 </div>
                 <button type="submit" class="btn btn-success">Sign in</button>
             </form>            
-*@
+            *@
 
-        </div>
     </div>
+
 </nav>
