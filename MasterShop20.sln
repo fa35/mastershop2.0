@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{99A837
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterShop20.DbDataTool", "Source\MasterShop20.DbDataTool\MasterShop20.DbDataTool.csproj", "{D8D7D507-391E-4B4A-A141-2300631751EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{16343E80-7B66-46EB-A93D-46DCE57E52DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16343E80-7B66-46EB-A93D-46DCE57E52DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16343E80-7B66-46EB-A93D-46DCE57E52DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D7D507-391E-4B4A-A141-2300631751EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D7D507-391E-4B4A-A141-2300631751EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D7D507-391E-4B4A-A141-2300631751EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D7D507-391E-4B4A-A141-2300631751EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

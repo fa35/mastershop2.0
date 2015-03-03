@@ -1,8 +1,4 @@
-﻿using System;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Mvc;
-using MasterShop20.Website.Database;
+﻿using System.Web.Mvc;
 
 namespace MasterShop20.Website.Controllers
 {
@@ -33,4 +29,5 @@ namespace MasterShop20.Website.Controllers
         }
 
     }
+
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{16343E80-7B66-46EB-A93D-46DCE57E52DD}</ProjectGuid>
+    <ProjectGuid>{D8D7D507-391E-4B4A-A141-2300631751EB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MasterShop20.GetDataTool</RootNamespace>
-    <AssemblyName>MasterShop20.GetDataTool</AssemblyName>
+    <RootNamespace>MasterShop20.DbDataTool</RootNamespace>
+    <AssemblyName>MasterShop20.DbDataTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -50,10 +50,6 @@
     <Compile Include="DbData\Class1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Infrastructure\Creator.cs" />
-    <Compile Include="Infrastructure\GetHtmlSite.cs" />
-    <Compile Include="Infrastructure\Data.cs" />
-    <Compile Include="Infrastructure\CreatorHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
