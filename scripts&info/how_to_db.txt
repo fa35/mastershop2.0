@@ -1,0 +1,30 @@
+DIE DATENBANK:
+
+Die mastershopdb_030315.sql öffnen, den String bei den beiden FILENAME
+abändern: von
+s:\program\Microsoft SQL Server\MSSQL11.SQLEXPRESSSERVER\MSSQL\DATA\MasterShopDb.mdf'
+nach
+EUERPFAD\Microsoft SQL Server\MSSQL11.SQLEXPRESSSERVER\MSSQL\DATA\MasterShopDb.mdf'
+
+Dann das Management Studio öffnen und im Abfragefenster den 
+abgeänderten Code reinkopieren, den Code ausführen lassen und 
+fertig (wenn keine Fehler kommen).
+
+FÜR DIE LINQ2SQLDATEI:
+
+Lösche die bestehende .dbml - Datei im Ordner Database im Projekt der 
+Webseite.
+Erstelle neue Datei in diesem Ordner per: add > new item > 
+linq to sql classes im reiter data auswählen (Datenendung = .dbml),
+nenne sie MasterShop.dbml.
+Warten bis die Datei geöffnet ist, dann Server Explorer öffnen, dann auf
+Connect to Database, Microsoft Sql Server auswählen und auf continue.
+Sever refreshen, warten, Express Server auswählen, MasterShopDb als 
+Datenbank auswählen, Verbindung testen und auf ok klicken.
+Data Connections aufklicken, die Datenbank auf machen, die Tabellen auf-
+klicken und die Tabellen in die Datei ziehen.
+Speichern.
+
+FÜR DIE TESTDATENSÄTZE:
+
+Das MasterShop20.DbDataTool starten und der Konsolenanweisung folgen.

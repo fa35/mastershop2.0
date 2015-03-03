@@ -24,11 +24,6 @@ shortcuts in browser for the developer tool:
  - step to next line: F10
 
 
-file 'erstelle_mastershop20.sql' contains only the db and the tables no entries
--> use the MasterShopDb20.GetDataTool to get some entries
--> the tool has the website as reference, so you have to buils the website first, if you haven't build it
-
-
 shortcuts with resharper:
  - rename sth: ctrl + r + r
  - get suggestions from resharper: mark sth and press alt + enter - press alt + enter again to use the suggestion

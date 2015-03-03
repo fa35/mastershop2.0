@@ -10,7 +10,6 @@ namespace MasterShop20.DbDataTool
     {
         static readonly string _datadir = AppDomain.CurrentDomain.BaseDirectory + "DbData";
 
-
         private static void SaveDbEntriesAsJson()
         {
             var context = new MasterShopDataContext();
@@ -69,7 +68,8 @@ namespace MasterShop20.DbDataTool
             try
             {
                 if (!Directory.Exists(_datadir) || Directory.EnumerateFiles(_datadir, "*json").Any())
-                    Console.WriteLine("Du musst das Projekt erst einmal bauen!");
+                    Console.WriteLine("Du musst das Projekt erst einmal bauen!" + Environment.NewLine +
+                        Environment.NewLine + "Bauen + nochmal starten");
                 else
                     LoadDbEntriesInDb();
             }
