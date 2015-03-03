@@ -30,21 +30,24 @@ namespace MasterShop20.Website.Database
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertArtikel(Artikel instance);
-    partial void UpdateArtikel(Artikel instance);
-    partial void DeleteArtikel(Artikel instance);
     partial void InsertUntergruppe(Untergruppe instance);
     partial void UpdateUntergruppe(Untergruppe instance);
     partial void DeleteUntergruppe(Untergruppe instance);
+    partial void InsertArtikel(Artikel instance);
+    partial void UpdateArtikel(Artikel instance);
+    partial void DeleteArtikel(Artikel instance);
     partial void InsertHauptgruppe(Hauptgruppe instance);
     partial void UpdateHauptgruppe(Hauptgruppe instance);
     partial void DeleteHauptgruppe(Hauptgruppe instance);
-    partial void InsertSteuersatz(Steuersatz instance);
-    partial void UpdateSteuersatz(Steuersatz instance);
-    partial void DeleteSteuersatz(Steuersatz instance);
     partial void InsertNutzer(Nutzer instance);
     partial void UpdateNutzer(Nutzer instance);
     partial void DeleteNutzer(Nutzer instance);
+    partial void InsertSession(Session instance);
+    partial void UpdateSession(Session instance);
+    partial void DeleteSession(Session instance);
+    partial void InsertSteuersatz(Steuersatz instance);
+    partial void UpdateSteuersatz(Steuersatz instance);
+    partial void DeleteSteuersatz(Steuersatz instance);
     #endregion
 		
 		public MasterShopDataContext() : 
@@ -77,19 +80,19 @@ namespace MasterShop20.Website.Database
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Artikel> Artikels
-		{
-			get
-			{
-				return this.GetTable<Artikel>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Untergruppe> Untergruppes
 		{
 			get
 			{
 				return this.GetTable<Untergruppe>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Artikel> Artikels
+		{
+			get
+			{
+				return this.GetTable<Artikel>();
 			}
 		}
 		
@@ -101,6 +104,22 @@ namespace MasterShop20.Website.Database
 			}
 		}
 		
+		public System.Data.Linq.Table<Nutzer> Nutzers
+		{
+			get
+			{
+				return this.GetTable<Nutzer>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Session> Sessions
+		{
+			get
+			{
+				return this.GetTable<Session>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Steuersatz> Steuersatzs
 		{
 			get
@@ -108,12 +127,114 @@ namespace MasterShop20.Website.Database
 				return this.GetTable<Steuersatz>();
 			}
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Untergruppe")]
+	public partial class Untergruppe : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		public System.Data.Linq.Table<Nutzer> Nutzers
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdUntergruppe;
+		
+		private string _Titel;
+		
+		private int _IdHauptgruppe;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdUntergruppeChanging(int value);
+    partial void OnIdUntergruppeChanged();
+    partial void OnTitelChanging(string value);
+    partial void OnTitelChanged();
+    partial void OnIdHauptgruppeChanging(int value);
+    partial void OnIdHauptgruppeChanged();
+    #endregion
+		
+		public Untergruppe()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUntergruppe", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdUntergruppe
 		{
 			get
 			{
-				return this.GetTable<Nutzer>();
+				return this._IdUntergruppe;
+			}
+			set
+			{
+				if ((this._IdUntergruppe != value))
+				{
+					this.OnIdUntergruppeChanging(value);
+					this.SendPropertyChanging();
+					this._IdUntergruppe = value;
+					this.SendPropertyChanged("IdUntergruppe");
+					this.OnIdUntergruppeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titel", DbType="VarChar(150) NOT NULL", CanBeNull=false)]
+		public string Titel
+		{
+			get
+			{
+				return this._Titel;
+			}
+			set
+			{
+				if ((this._Titel != value))
+				{
+					this.OnTitelChanging(value);
+					this.SendPropertyChanging();
+					this._Titel = value;
+					this.SendPropertyChanged("Titel");
+					this.OnTitelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdHauptgruppe", DbType="Int NOT NULL")]
+		public int IdHauptgruppe
+		{
+			get
+			{
+				return this._IdHauptgruppe;
+			}
+			set
+			{
+				if ((this._IdHauptgruppe != value))
+				{
+					this.OnIdHauptgruppeChanging(value);
+					this.SendPropertyChanging();
+					this._IdHauptgruppe = value;
+					this.SendPropertyChanged("IdHauptgruppe");
+					this.OnIdHauptgruppeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -127,8 +248,6 @@ namespace MasterShop20.Website.Database
 		private int _IdArtikel;
 		
 		private string _Titel;
-		
-		private int _IdHauptgruppe;
 		
 		private int _IdUntergruppe;
 		
@@ -152,8 +271,6 @@ namespace MasterShop20.Website.Database
     partial void OnIdArtikelChanged();
     partial void OnTitelChanging(string value);
     partial void OnTitelChanged();
-    partial void OnIdHauptgruppeChanging(int value);
-    partial void OnIdHauptgruppeChanged();
     partial void OnIdUntergruppeChanging(int value);
     partial void OnIdUntergruppeChanged();
     partial void OnNettoPreisChanging(decimal value);
@@ -211,26 +328,6 @@ namespace MasterShop20.Website.Database
 					this._Titel = value;
 					this.SendPropertyChanged("Titel");
 					this.OnTitelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdHauptgruppe", DbType="Int NOT NULL")]
-		public int IdHauptgruppe
-		{
-			get
-			{
-				return this._IdHauptgruppe;
-			}
-			set
-			{
-				if ((this._IdHauptgruppe != value))
-				{
-					this.OnIdHauptgruppeChanging(value);
-					this.SendPropertyChanging();
-					this._IdHauptgruppe = value;
-					this.SendPropertyChanged("IdHauptgruppe");
-					this.OnIdHauptgruppeChanged();
 				}
 			}
 		}
@@ -396,92 +493,6 @@ namespace MasterShop20.Website.Database
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Untergruppe")]
-	public partial class Untergruppe : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IdUntergruppe;
-		
-		private string _Titel;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdUntergruppeChanging(int value);
-    partial void OnIdUntergruppeChanged();
-    partial void OnTitelChanging(string value);
-    partial void OnTitelChanged();
-    #endregion
-		
-		public Untergruppe()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdUntergruppe", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int IdUntergruppe
-		{
-			get
-			{
-				return this._IdUntergruppe;
-			}
-			set
-			{
-				if ((this._IdUntergruppe != value))
-				{
-					this.OnIdUntergruppeChanging(value);
-					this.SendPropertyChanging();
-					this._IdUntergruppe = value;
-					this.SendPropertyChanged("IdUntergruppe");
-					this.OnIdUntergruppeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titel", DbType="VarChar(150) NOT NULL", CanBeNull=false)]
-		public string Titel
-		{
-			get
-			{
-				return this._Titel;
-			}
-			set
-			{
-				if ((this._Titel != value))
-				{
-					this.OnTitelChanging(value);
-					this.SendPropertyChanging();
-					this._Titel = value;
-					this.SendPropertyChanged("Titel");
-					this.OnTitelChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Hauptgruppe")]
 	public partial class Hauptgruppe : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -543,116 +554,6 @@ namespace MasterShop20.Website.Database
 					this._Titel = value;
 					this.SendPropertyChanged("Titel");
 					this.OnTitelChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Steuersatz")]
-	public partial class Steuersatz : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IdSteuersatz;
-		
-		private string _Titel;
-		
-		private decimal _Steuersatz1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdSteuersatzChanging(int value);
-    partial void OnIdSteuersatzChanged();
-    partial void OnTitelChanging(string value);
-    partial void OnTitelChanged();
-    partial void OnSteuersatz1Changing(decimal value);
-    partial void OnSteuersatz1Changed();
-    #endregion
-		
-		public Steuersatz()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdSteuersatz", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int IdSteuersatz
-		{
-			get
-			{
-				return this._IdSteuersatz;
-			}
-			set
-			{
-				if ((this._IdSteuersatz != value))
-				{
-					this.OnIdSteuersatzChanging(value);
-					this.SendPropertyChanging();
-					this._IdSteuersatz = value;
-					this.SendPropertyChanged("IdSteuersatz");
-					this.OnIdSteuersatzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titel", DbType="VarChar(150) NOT NULL", CanBeNull=false)]
-		public string Titel
-		{
-			get
-			{
-				return this._Titel;
-			}
-			set
-			{
-				if ((this._Titel != value))
-				{
-					this.OnTitelChanging(value);
-					this.SendPropertyChanging();
-					this._Titel = value;
-					this.SendPropertyChanged("Titel");
-					this.OnTitelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Steuersatz", Storage="_Steuersatz1", DbType="Decimal(18,2) NOT NULL")]
-		public decimal Steuersatz1
-		{
-			get
-			{
-				return this._Steuersatz1;
-			}
-			set
-			{
-				if ((this._Steuersatz1 != value))
-				{
-					this.OnSteuersatz1Changing(value);
-					this.SendPropertyChanging();
-					this._Steuersatz1 = value;
-					this.SendPropertyChanged("Steuersatz1");
-					this.OnSteuersatz1Changed();
 				}
 			}
 		}
@@ -931,6 +832,274 @@ namespace MasterShop20.Website.Database
 					this._IsAdmin = value;
 					this.SendPropertyChanged("IsAdmin");
 					this.OnIsAdminChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Session")]
+	public partial class Session : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _IdSession;
+		
+		private int _IdNutzer;
+		
+		private string _ArtikelInwarenkorb;
+		
+		private System.DateTime _LoginDateTime;
+		
+		private System.Nullable<System.DateTime> _LogoutDateTime;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdSessionChanging(long value);
+    partial void OnIdSessionChanged();
+    partial void OnIdNutzerChanging(int value);
+    partial void OnIdNutzerChanged();
+    partial void OnArtikelInwarenkorbChanging(string value);
+    partial void OnArtikelInwarenkorbChanged();
+    partial void OnLoginDateTimeChanging(System.DateTime value);
+    partial void OnLoginDateTimeChanged();
+    partial void OnLogoutDateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnLogoutDateTimeChanged();
+    #endregion
+		
+		public Session()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdSession", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long IdSession
+		{
+			get
+			{
+				return this._IdSession;
+			}
+			set
+			{
+				if ((this._IdSession != value))
+				{
+					this.OnIdSessionChanging(value);
+					this.SendPropertyChanging();
+					this._IdSession = value;
+					this.SendPropertyChanged("IdSession");
+					this.OnIdSessionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdNutzer", DbType="Int NOT NULL")]
+		public int IdNutzer
+		{
+			get
+			{
+				return this._IdNutzer;
+			}
+			set
+			{
+				if ((this._IdNutzer != value))
+				{
+					this.OnIdNutzerChanging(value);
+					this.SendPropertyChanging();
+					this._IdNutzer = value;
+					this.SendPropertyChanged("IdNutzer");
+					this.OnIdNutzerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArtikelInwarenkorb", DbType="VarChar(MAX)")]
+		public string ArtikelInwarenkorb
+		{
+			get
+			{
+				return this._ArtikelInwarenkorb;
+			}
+			set
+			{
+				if ((this._ArtikelInwarenkorb != value))
+				{
+					this.OnArtikelInwarenkorbChanging(value);
+					this.SendPropertyChanging();
+					this._ArtikelInwarenkorb = value;
+					this.SendPropertyChanged("ArtikelInwarenkorb");
+					this.OnArtikelInwarenkorbChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoginDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime LoginDateTime
+		{
+			get
+			{
+				return this._LoginDateTime;
+			}
+			set
+			{
+				if ((this._LoginDateTime != value))
+				{
+					this.OnLoginDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._LoginDateTime = value;
+					this.SendPropertyChanged("LoginDateTime");
+					this.OnLoginDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogoutDateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LogoutDateTime
+		{
+			get
+			{
+				return this._LogoutDateTime;
+			}
+			set
+			{
+				if ((this._LogoutDateTime != value))
+				{
+					this.OnLogoutDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._LogoutDateTime = value;
+					this.SendPropertyChanged("LogoutDateTime");
+					this.OnLogoutDateTimeChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Steuersatz")]
+	public partial class Steuersatz : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdSteuersatz;
+		
+		private string _Titel;
+		
+		private decimal _Steuersatz1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdSteuersatzChanging(int value);
+    partial void OnIdSteuersatzChanged();
+    partial void OnTitelChanging(string value);
+    partial void OnTitelChanged();
+    partial void OnSteuersatz1Changing(decimal value);
+    partial void OnSteuersatz1Changed();
+    #endregion
+		
+		public Steuersatz()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdSteuersatz", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdSteuersatz
+		{
+			get
+			{
+				return this._IdSteuersatz;
+			}
+			set
+			{
+				if ((this._IdSteuersatz != value))
+				{
+					this.OnIdSteuersatzChanging(value);
+					this.SendPropertyChanging();
+					this._IdSteuersatz = value;
+					this.SendPropertyChanged("IdSteuersatz");
+					this.OnIdSteuersatzChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titel", DbType="VarChar(150) NOT NULL", CanBeNull=false)]
+		public string Titel
+		{
+			get
+			{
+				return this._Titel;
+			}
+			set
+			{
+				if ((this._Titel != value))
+				{
+					this.OnTitelChanging(value);
+					this.SendPropertyChanging();
+					this._Titel = value;
+					this.SendPropertyChanged("Titel");
+					this.OnTitelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Steuersatz", Storage="_Steuersatz1", DbType="Decimal(18,2) NOT NULL")]
+		public decimal Steuersatz1
+		{
+			get
+			{
+				return this._Steuersatz1;
+			}
+			set
+			{
+				if ((this._Steuersatz1 != value))
+				{
+					this.OnSteuersatz1Changing(value);
+					this.SendPropertyChanging();
+					this._Steuersatz1 = value;
+					this.SendPropertyChanged("Steuersatz1");
+					this.OnSteuersatz1Changed();
 				}
 			}
 		}

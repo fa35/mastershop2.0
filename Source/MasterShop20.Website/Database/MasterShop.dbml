@@ -1,10 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MasterShopDb" Class="MasterShopDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=TARRAFT-05\SQLEXPRESSSERVER;Initial Catalog=MasterShopDb;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="MasterShopDbConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Untergruppe" Member="Untergruppes">
+    <Type Name="Untergruppe">
+      <Column Name="IdUntergruppe" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="IdHauptgruppe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.Artikel" Member="Artikels">
     <Type Name="Artikel">
       <Column Name="IdArtikel" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
-      <Column Name="IdHauptgruppe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IdUntergruppe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="NettoPreis" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
       <Column Name="IdSteuersatz" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -14,23 +20,10 @@
       <Column Name="BildLink" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Untergruppe" Member="Untergruppes">
-    <Type Name="Untergruppe">
-      <Column Name="IdUntergruppe" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.Hauptgruppe" Member="Hauptgruppes">
     <Type Name="Hauptgruppe">
       <Column Name="IdHauptgruppe" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Steuersatz" Member="Steuersatzs">
-    <Type Name="Steuersatz">
-      <Column Name="IdSteuersatz" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
-      <Column Name="Steuersatz" Member="Steuersatz1" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Nutzer" Member="Nutzers">
@@ -45,6 +38,22 @@
       <Column Name="EMail" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
       <Column Name="Passwort" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
       <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Session" Member="Sessions">
+    <Type Name="Session">
+      <Column Name="IdSession" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdNutzer" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtikelInwarenkorb" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="LoginDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LogoutDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Steuersatz" Member="Steuersatzs">
+    <Type Name="Steuersatz">
+      <Column Name="IdSteuersatz" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Steuersatz" Member="Steuersatz1" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
