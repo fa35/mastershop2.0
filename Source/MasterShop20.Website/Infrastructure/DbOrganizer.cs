@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
@@ -90,7 +91,7 @@ namespace MasterShop20.Website.Infrastructure
                 _msdc.SubmitChanges();
 
                 manager.CreateUserSession(nutzer.IdNutzer);
-                
+
                 return nutzer;
             }
             catch (Exception)
@@ -101,5 +102,29 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
+        public long? CheckCurrentLogin(int idNutzer)
+        {
+            var session = _msdc.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
+            if (session != null)
+                return session.IdSession;
+
+            return null;
+        }
+
+        public Session GetSessionData(int idNutzer)
+        {
+            var session = _msdc.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
+            return session ?? null; // = kurzschreibweise für if(session != null) return session else return null
+        }
+
+        public List<Artikel> GetArticlesByIds(List<int> articleIds)
+        {
+            var articles = new List<Artikel>();
+
+            foreach (var id in articleIds)
+                articles.Add(_msdc.Artikels.FirstOrDefault(p => p.IdArtikel == id));
+
+            return articles;
+        }
     }
 }
