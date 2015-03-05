@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -9,55 +10,58 @@
     <link rel="stylesheet" type="text/css" href="../../Content/bootstrap/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" type="text/css" href="../../Content/bootstrap/css/bootstrap.min.css" />
 
-    @Styles.Render("~/bootstrap/style/stuff")
-
 </head>
 
 
 <body>
 
-    <div class="container col-md-12">
+    <div class="container">
+
+        <header class="row">
+            <div class="col-md-5 left" id='logo'>
+                <a href="#">
+                    <img src='../../Content/images/logo_no1.png' alt='mastershop24' style='width: 400px;' id="logo"/>
+                </a>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 right">
+                <ul class="nav navbar nav-tabs menulist">
+                    <li>@Html.ActionLink("registrieren", "Register", "Account")</li>
+                    <li>@Html.ActionLink("anmelden", "Login", "Account")</li>
+                    <li>@Html.ActionLink("Warenkorb", "Index", "Cart")</li>
+                </ul>
+            </div>
+
+        </header>
 
         <div class="row">
-
-            <div class="col-md-12" style="margin-bottom: 20px;">
-                @RenderSection("navigation", required: false)
-            </div>
-            
-            <div class="col-md-1"></div>
-
-            <div class="col-md-1" style="margin-top: 25px;">
+            <div class="col-md-2">
                 @RenderSection("menu", required: false)
             </div>
-
-            <div class="col-md-9" style="margin-top: 30px;">
-                @RenderBody() 
+            <div class="col-md-10">
+                @RenderBody()
             </div>
-
-            <div class="col-md-1"></div>
-
         </div>
 
+        <footer class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-5">
+                © mastershop24 - @DateTime.Today.Year
+                @Html.ActionLink("Impressum", "LegalNotice", "Home")
+                @Html.ActionLink("Datenschutzerklärung", "PrivacyPolicy", "Home")
+                @Html.ActionLink("AGBs", "GeneralBusinessTerms", "Home")
+            </div>
+            <div class="col-md-3"></div>
+        </footer>
 
-        <div class="col-xs-12">
-            <footer>
-                <p>
-                    © mastershop24 - @DateTime.Today.Year
-                    @Html.ActionLink("Impressum", "LegalNotice", "Home")
-                    @Html.ActionLink("Datenschutzerklärung", "PrivacyPolicy", "Home")
-                    @Html.ActionLink("AGBs", "GeneralBusinessTerms", "Home")
-                </p>
-            </footer>
-        </div>
 
+
+        <script type="text/javascript" src="../../Scripts/jquery/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="../../Scripts/bootstrap/bootstrap.min.js"></script>
+
+        @RenderSection("scripts", required: false)
     </div>
 
-    @Scripts.Render("~/bundles/bootquery");
-    
-    <script type="text/javascript" src="../../Scripts/jquery/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="../../Scripts/bootstrap/bootstrap.min.js"></script>
-
-    @RenderSection("scripts", required: false)
-
 </body>
+
 </html>

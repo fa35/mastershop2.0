@@ -31,7 +31,6 @@ namespace MasterShop20.Website.Infrastructure
             return exits;
         }
 
-
         public bool CheckRegistrationData(Registration regist)
         {
 
@@ -53,8 +52,6 @@ namespace MasterShop20.Website.Infrastructure
             return exists;
         }
 
-
-
         public Nutzer ConvertLoginToNutzer(Login login)
         {
             var nutzer = _datacontext.Nutzers.FirstOrDefault(
@@ -67,7 +64,6 @@ namespace MasterShop20.Website.Infrastructure
 
             return nutzer;
         }
-
 
         public Nutzer CreateNutzer(Registration regist)
         {
@@ -113,6 +109,8 @@ namespace MasterShop20.Website.Infrastructure
             return session ?? null; // = kurzschreibweise für if(session != null) return session else return null
         }
 
+
+
         public List<Artikel> GetArticlesByIds(List<int> articleIds)
         {
             var articles = new List<Artikel>();
@@ -123,10 +121,36 @@ namespace MasterShop20.Website.Infrastructure
             return articles;
         }
 
-        public List<Artikel> GetArticles()
+        public List<Artikel> GetArticles(int page, int amount)
         {
-            return _datacontext.Artikels.Take(20).ToList();
+            return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
         }
 
+
+
+        public Dictionary<string, List<string>> GetGroups()
+        {
+            var dic = new Dictionary<string, List<string>>();
+
+            foreach (var hauptgruppe in _datacontext.Hauptgruppes)
+            {
+                dic.Add(hauptgruppe.Titel, _datacontext.Untergruppes
+                    .Where(u => u.IdHauptgruppe == hauptgruppe.IdHauptgruppe)
+                        .Select(p => p.Titel)
+                        .ToList());
+            }
+
+            return dic;
+        }
+
+        public decimal GetSteuersatz(int idSteuersatz)
+        {
+            return _datacontext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
+        }
+
+        public Artikel GetArticleById(int id)
+        {
+            return _datacontext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
+        }
     }
 }

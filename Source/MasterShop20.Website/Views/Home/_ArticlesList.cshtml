@@ -1,0 +1,47 @@
+﻿@model System.Collections.Generic.List<MasterShop20.Website.Models.ArticleViewModel>
+
+<table class="table table-striped table-hover table-condensed articleslist">
+
+    <thead>
+        <tr>
+            <th style="width: 100px">Bild</th>
+            <th style="width: 200px">Titel</th>
+            <th>Beschreibung</th>
+            <th style="width: 70px">Preis</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @{
+            if (Model != null)
+            {
+
+                foreach (var article in Model)
+                {
+                    var link = article.PicLink;
+                
+            <tr>
+                <td>
+                    <img src="@link" width="70" alt="picLink" class="img-rounded"/>
+                </td>
+
+                <td>
+                    @article.Title
+                </td>
+
+                <td id="@article.ArticleId">
+                    @article.Description
+                    <a href="#" onclick="showArticleDescription(@article.ArticleId)"><strong>...</strong></a>
+                </td>
+
+                <td>@article.Price</td>
+            </tr>
+                }
+            }
+        
+        }
+
+    </tbody>
+
+</table>

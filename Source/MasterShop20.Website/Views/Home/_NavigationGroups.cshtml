@@ -1,0 +1,27 @@
+﻿@model System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>
+
+
+@{
+    if (Model != null)
+    {
+
+    <ul class="nav navbar">
+        @{
+        foreach (var haupt in Model)
+        {
+            <li><a href="#" onclick=" toggleVisibilityUntergruppe(this) ">@haupt.Key </a>
+
+                <ul id="unter_@haupt.Key" style="display: none;">
+                    @{
+            foreach (var unter in haupt.Value)
+            {
+                        <li><a href="#">@unter </a></li>
+            }
+                    }
+                </ul>
+            </li>
+        }
+        }
+    </ul>
+    }
+}

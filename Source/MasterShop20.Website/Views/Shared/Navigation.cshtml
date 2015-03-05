@@ -1,48 +1,27 @@
 ﻿@model dynamic
-@*@model MasterShop20.Website.Models.Login*@
 
 <nav class="navbar navbar-fixed-top">
-
-    <div class="container">
-
-        <form action="@{ Html.Action("Login", "Account");}" class="form-horizontal">
-
-            <div class="form-group col-xs-12 nav navbar">
-
-                <img src="../../Content/images/logo_no1.png" alt="mastershop24" class="col-xs-4" />
-                <div style="margin: 15px;">
-                    <div class="col-xs-3">
-                        <input type="text" name="mailaddress" placeholder="E-Mail Adresse" title="E-Mail Adresse" class='form-control' required />
-                    </div>
-                    <div class="col-xs-3">
-                        <input type="text" name="password" placeholder="Passwort" title="Passwort" class="form-control" required />
-                    </div>
-                    <div class="col-xs-2">
-                        <button type="submit" class="btn btn-success" style="float: right">anmelden</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <div class="form-group col-xs-12 nav navbar-right small">
-            <div class="col-xs-12">
-                Oder @Html.ActionLink("registrieren", "Register", "Account") dich hier, falls du noch keinen Account hast!
-            </div>
+    
+    
+    <form action="@{ Html.Action("Login", "Account");}" class="form-horizontal">
+        <div class="col-md-2">
+            <img src="../../Content/images/logo_no1.png" alt="mastershop24" />
         </div>
+        <div class="col-md-3">
+            <input type="text" name="mailaddress" placeholder="E-Mail Adresse" title="E-Mail Adresse" class='form-control' required />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="password" placeholder="Passwort" title="Passwort" class="form-control" required />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success" style="float: right">anmelden</button>
+        </div>
+    </form>
 
-
-
-        @* html - variante:
-            
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <input type="email" placeholder="Email" class="form-control">
-                    <input type="password" placeholder="Password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
-            </form>            
-            *@
-
+    <div class="form-group col-md-12 nav navbar">
+        <div class="col-md-12 small right">
+            Oder @Html.ActionLink("registrieren", "Register", "Account") dich hier, falls du noch keinen Account hast!
+        </div>
     </div>
 
 </nav>
