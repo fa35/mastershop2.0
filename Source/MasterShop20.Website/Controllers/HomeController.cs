@@ -34,7 +34,7 @@ namespace MasterShop20.Website.Controllers
             }
             return PartialView("_ArticlesList", vms);
         }
-
+        
 
         public string GetArticleDescription(string articleId)
         {
@@ -47,9 +47,6 @@ namespace MasterShop20.Website.Controllers
 
             return article != null ? article.Beschreibung : "";
         }
-
-
-        
 
 
         public ActionResult GetGroupesFormMenu()
