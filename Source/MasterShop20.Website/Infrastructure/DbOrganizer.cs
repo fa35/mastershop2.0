@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
@@ -19,8 +20,28 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool CheckLoginData(Login login)
         {
-            if (!_datacontext.Nutzers.Any())
+            //if (!_datacontext.Nutzers.Any())
+            //    return false;
+            bool userdb_exists;
+            try
+            {
+                _datacontext.Nutzers.Any();
+                userdb_exists = true;
+            }
+            catch (Exception ex)
+            {
+                userdb_exists = false;
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                File.WriteAllText(path + @"\error.log", ex.ToString());
+            }
+            if (!userdb_exists)
+            {
                 return false;
+            }
 
             var exits =
                 _datacontext.Nutzers.Any(
@@ -123,7 +144,24 @@ namespace MasterShop20.Website.Infrastructure
 
         public List<Artikel> GetArticles(int page, int amount)
         {
-            return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
+        //    return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
+            var articles_list = new List<Artikel>();
+
+            try
+            {
+                articles_list = _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
+            }
+            catch (Exception ex)
+            {
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                File.WriteAllText(path + @"\error.log", ex.ToString());
+            }
+            return articles_list;
+
         }
 
 
