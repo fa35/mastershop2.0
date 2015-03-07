@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using MasterShop20.Website.Database;
@@ -13,7 +14,9 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool AddArticleToUserSession(int idNutzer, int idArtikel)
         {
-            using (var context = new MasterShopDataContext())
+            var con = ConfigurationManager.AppSettings["connection"];
+
+            using (var context = new MasterShopDataContext(con))
             {
                 var session = context.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
                 var currentList = JsonConvert.DeserializeObject<List<int>>(session.ArtikelInwarenkorb);
@@ -27,7 +30,9 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool CreateUserSession(int idNutzer)
         {
-            using (var context = new MasterShopDataContext())
+            var con = ConfigurationManager.AppSettings["connection"];
+
+            using (var context = new MasterShopDataContext(con))
             {
                 if (context.Sessions.Any(p => p.IdNutzer == idNutzer && p.LogoutDateTime == null))
                     return false;

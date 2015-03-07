@@ -1,9 +1,9 @@
 ﻿
 
-$(document).on('load', function () {
+$(document).ready(function () {
     $.ajax({
         type: "POST",
-        url: "/Home/GetGroupesFormMenu",
+        url: "/Home/GetNavigationGroups",
         success: function (msg) {
             $("#navigationContent").html(msg);
         }
@@ -14,4 +14,4 @@ $(document).on('load', function () {
 function toggleVisibilityUntergruppe(element) {
     var untergruppen = document.getElementById('unter_' + $(element).text());
     $(untergruppen).fadeToggle("slow");
-};
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using MasterShop20.Website.Database;
@@ -14,23 +15,26 @@ namespace MasterShop20.Website.Infrastructure
 
         public DbOrganizer()
         {
-            _datacontext = new MasterShopDataContext();
+            var con = ConfigurationManager.AppSettings["connection"];
+            _datacontext = new MasterShopDataContext(con);
         }
 
 
         public bool CheckLoginData(Login login)
         {
-            //if (!_datacontext.Nutzers.Any())
-            //    return false;
-            bool userdb_exists;
+            if (!_datacontext.Nutzers.Any())
+                return false;
+
+            var exists = false;
+
             try
             {
-                _datacontext.Nutzers.Any();
-                userdb_exists = true;
+                exists = _datacontext.Nutzers.Any(n => 
+                    n.EMail.Equals(login.MailAddress, StringComparison.InvariantCultureIgnoreCase)
+                    && n.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
             {
-                userdb_exists = false;
                 var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
                 if (!Directory.Exists(path))
                 {
@@ -38,18 +42,8 @@ namespace MasterShop20.Website.Infrastructure
                 }
                 File.WriteAllText(path + @"\error.log", ex.ToString());
             }
-            if (!userdb_exists)
-            {
-                return false;
-            }
 
-            var exits =
-                _datacontext.Nutzers.Any(
-                    p =>
-                        p.EMail.Equals(login.MailAddress,
-                            StringComparison.InvariantCultureIgnoreCase) && p.Passwort.Equals(login.Password));
-
-            return exits;
+            return exists;
         }
 
         public bool CheckRegistrationData(Registration regist)
@@ -144,7 +138,7 @@ namespace MasterShop20.Website.Infrastructure
 
         public List<Artikel> GetArticles(int page, int amount)
         {
-        //    return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
+            //    return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
             var articles_list = new List<Artikel>();
 
             try
@@ -183,12 +177,24 @@ namespace MasterShop20.Website.Infrastructure
 
         public decimal GetSteuersatz(int idSteuersatz)
         {
-            return _datacontext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
+            decimal st = 19;
+            try
+            {
+                st = _datacontext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
+            }
+            catch (Exception)
+            {
+                st = 19;
+            }
+
+            return st;
         }
 
         public Artikel GetArticleById(int id)
         {
             return _datacontext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
         }
+
+
     }
 }

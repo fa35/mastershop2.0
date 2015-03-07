@@ -49,7 +49,7 @@ namespace MasterShop20.Website.Controllers
         }
 
 
-        public ActionResult GetGroupesFormMenu()
+        public ActionResult GetNavigationGroups()
         {
             _organizer = new DbOrganizer();
             var dic = _organizer.GetGroups();
@@ -61,7 +61,6 @@ namespace MasterShop20.Website.Controllers
         {
             return new List<Artikel>();
         }
-
 
         public ActionResult PrivacyPolicy()
         {

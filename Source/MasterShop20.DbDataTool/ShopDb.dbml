@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MasterShopDb" Class="MasterShopDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Table Name="dbo.Untergruppe" Member="Untergruppes">
-    <Type Name="Untergruppe">
-      <Column Name="IdUntergruppe" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
-      <Column Name="IdHauptgruppe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MasterShopDb" Class="ShopDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.Artikel" Member="Artikels">
     <Type Name="Artikel">
       <Column Name="IdArtikel" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -17,6 +10,13 @@
       <Column Name="Datenblatt" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="IdOriginal" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BildLink" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Untergruppe" Member="Untergruppes">
+    <Type Name="Untergruppe">
+      <Column Name="IdUntergruppe" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="IdHauptgruppe" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Hauptgruppe" Member="Hauptgruppes">

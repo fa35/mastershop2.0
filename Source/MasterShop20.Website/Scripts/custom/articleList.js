@@ -41,13 +41,3 @@ function reduceArticleDescription(articleId) {
     $("#" + articleId).html(test);
 
 }
-
-
-
-$(document).ready(function () {
-    $('table#articleListResult').DataTable(
-    {
-        bJQueryUI: true,
-        sPaginationType: "full_numbers"
-    });
-});

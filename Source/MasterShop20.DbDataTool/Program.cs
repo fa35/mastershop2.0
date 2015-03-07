@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using MasterShop20.Website.Database;
 using Newtonsoft.Json;
 
 namespace MasterShop20.DbDataTool
@@ -11,10 +11,8 @@ namespace MasterShop20.DbDataTool
     {
         static readonly string _datadir = AppDomain.CurrentDomain.BaseDirectory + "DbData";
 
-        private static void SaveDbEntriesAsJson()
+        private static void SaveDbEntriesAsJson(ShopDbDataContext context)
         {
-            var context = new MasterShopDataContext();
-
             if (!Directory.Exists(_datadir))
                 Directory.CreateDirectory(_datadir);
 
@@ -33,12 +31,15 @@ namespace MasterShop20.DbDataTool
             content = JsonConvert.SerializeObject(context.Hauptgruppes.ToList());
             path = Path.Combine(_datadir, "hauptgruppe.json");
             File.WriteAllText(path, content);
+
+            content = JsonConvert.SerializeObject(context.Nutzers.ToList());
+            path = Path.Combine(_datadir, "nutzer.json");
+            File.WriteAllText(path, content);
         }
 
-        private static void LoadDbEntriesInDb()
-        {
-            var context = new MasterShopDataContext();
 
+        private static void LoadDbEntriesInDb(ShopDbDataContext context)
+        {
             var content = File.ReadAllText(Path.Combine(_datadir, "artikel.json"));
             var list = JsonConvert.DeserializeObject<List<Artikel>>(content);
             context.Artikels.InsertAllOnSubmit(list);
@@ -55,6 +56,9 @@ namespace MasterShop20.DbDataTool
             var list4 = JsonConvert.DeserializeObject<List<Hauptgruppe>>(content4);
             context.Hauptgruppes.InsertAllOnSubmit(list4);
 
+            var content5 = File.ReadAllText(Path.Combine(_datadir, "nutzer.json"));
+            var list5 = JsonConvert.DeserializeObject<List<Nutzer>>(content5);
+            context.Nutzers.InsertAllOnSubmit(list5);
 
             context.SubmitChanges();
         }
@@ -62,22 +66,24 @@ namespace MasterShop20.DbDataTool
 
         static void Main(string[] args)
         {
+            var connectionstring = ConfigurationManager.AppSettings["connection"];
+            var context = new ShopDbDataContext(connectionstring);
+
             // todo: Methoden vervollständigen wenn mehr Tabellen / Tabelleneinträge kommen die wichtig sind
+            // SaveDbEntriesAsJson(context);
 
-             //SaveDbEntriesAsJson();
-
-             try
-             {
-                 if (!Directory.Exists(_datadir) || !Directory.EnumerateFiles(_datadir, "*.json").Any())
-                     Console.WriteLine("Du musst das Projekt erst einmal bauen!" + Environment.NewLine +
-                         Environment.NewLine + "Bauen + nochmal starten");
-                 else
-                     LoadDbEntriesInDb();
-             }
-             catch (Exception ex)
-             {
-                 Console.WriteLine(ex);
-             }
+            try
+            {
+                if (!Directory.Exists(_datadir) || !Directory.EnumerateFiles(_datadir, "*.json").Any())
+                    Console.WriteLine("Du musst das Projekt erst einmal bauen!" + Environment.NewLine +
+                        Environment.NewLine + "Bauen + nochmal starten");
+                else
+                    LoadDbEntriesInDb(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
             Console.WriteLine("Mit irgendeiner Taste beenden");
             Console.ReadKey();

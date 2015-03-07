@@ -189,9 +189,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Navigation.cshtml" />
     <Content Include="Views\Account\AccountSettings.cshtml" />
-    <Content Include="Views\Account\_SettingsOptions.cshtml" />
     <Content Include="Views\Home\PricacyPolicy.cshtml" />
     <Content Include="Views\Home\LegalNotice.cshtml" />
     <Content Include="Views\Home\GeneralBusinessTerms.cshtml" />
