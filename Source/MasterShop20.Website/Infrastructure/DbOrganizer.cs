@@ -138,7 +138,6 @@ namespace MasterShop20.Website.Infrastructure
 
         public List<Artikel> GetArticles(int page, int amount)
         {
-            //    return _datacontext.Artikels.Skip(page * amount).Take(amount).ToList();
             var articles_list = new List<Artikel>();
 
             try
@@ -195,6 +194,20 @@ namespace MasterShop20.Website.Infrastructure
             return _datacontext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
         }
 
+        public bool StoreSession(Session session)
+        {
+            try
+            {
+                _datacontext.Sessions.InsertOnSubmit(session);
+                _datacontext.SubmitChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;   
+                throw ex;
+            }
+        }
 
     }
 }

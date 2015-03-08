@@ -42,6 +42,9 @@
             </div>
             <div class="col-md-10">
                 @RenderBody()
+                
+                <input type="hidden" id="currentUserId" value=""/>
+
             </div>
         </div>
 
@@ -60,6 +63,7 @@
 
         <script type="text/javascript" src="../../Scripts/jquery/jquery-2.1.3.min.js"></script>
         <script type="text/javascript" src="../../Scripts/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../Scripts/custom/main.js"></script>
 
         @RenderSection("scripts", required: false)
     </div>

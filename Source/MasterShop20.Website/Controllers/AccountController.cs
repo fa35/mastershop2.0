@@ -9,7 +9,7 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Account/
 
-        public ActionResult Login(Login login)
+        public ActionResult Login(Login login) // aktuelle Seite sollte mitübergeben werden, sodass der Nutzer nachdem Login wieder dort hinkommt wo er war
         {
             var organizer = new DbOrganizer();
 

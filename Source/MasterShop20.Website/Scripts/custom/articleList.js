@@ -41,3 +41,26 @@ function reduceArticleDescription(articleId) {
     $("#" + articleId).html(test);
 
 }
+
+
+function addArticleToCart(articleId) {
+
+    var userid = document.getElementById('currentUserId').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/Cart/AddArticleToCart",
+        data: {
+            idNutzer: userid,
+            articleId: articleId
+        },
+        success: function (result) {
+
+            // if result == true -> article added else article can't be addeded
+
+            // show notification
+
+        }
+    });
+
+}

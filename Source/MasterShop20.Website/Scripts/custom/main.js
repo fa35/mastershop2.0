@@ -5,3 +5,12 @@ $("#logo").on("click", function () {
 
 });
 
+
+
+
+function setUserId(idNutzer) {
+
+    var hiddenfield = document.getElementById('currentUserId');
+    hiddenfield.value = idNutzer;
+
+}

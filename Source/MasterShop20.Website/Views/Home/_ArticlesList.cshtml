@@ -8,6 +8,7 @@
             <th style="width: 200px">Titel</th>
             <th>Beschreibung</th>
             <th style="width: 70px">Preis</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -36,6 +37,10 @@
                 </td>
 
                 <td>@article.Price</td>
+
+                <td>
+                    <button type="button" class="btn-primary btn-sm btn" onclick="addArticleToCart(@article.ArticleId)">hinzufügen</button>
+                </td>
             </tr>
                 }
             }
