@@ -26,11 +26,7 @@ namespace MasterShop20.Website.Controllers
             foreach (var artikel in articles)
             {
                 var satz = _organizer.GetSteuersatz(artikel.IdSteuersatz);
-
-                vms.Add(satz != null
-                    ? new ArticleViewModel().ToViewModel(artikel, satz)
-                    : new ArticleViewModel().ToViewModel(artikel)
-                    );
+                vms.Add( new ArticleViewModel().ToViewModel(artikel, satz));
             }
             return PartialView("_ArticlesList", vms);
         }
@@ -75,6 +71,19 @@ namespace MasterShop20.Website.Controllers
         public ActionResult GeneralBusinessTerms()
         {
             return View("GeneralBusinessTerms");
+        }
+
+
+
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult Registration()
+        {
+            return View();
         }
 
     }

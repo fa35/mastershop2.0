@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MasterShop20.Website.Infrastructure;
+using MasterShop20.Website.Models;
 using Newtonsoft.Json;
 
 namespace MasterShop20.Website.Controllers
@@ -33,7 +34,16 @@ namespace MasterShop20.Website.Controllers
 
                 var articles = organizer.GetArticlesByIds(articleIds);
 
-                return View("Index", articles);
+
+                var avms = new List<ArticleViewModel>();
+
+                foreach (var art in articles)
+                {
+                    var steuersatz = organizer.GetSteuersatz(art.IdSteuersatz);
+                    avms.Add(new ArticleViewModel().ToViewModel(art, steuersatz));
+                }
+
+                return View("Index", avms);
             }
 
 
@@ -65,6 +75,13 @@ namespace MasterShop20.Website.Controllers
                 return organizer.StoreSession(session);
             }
         }
+
+
+        public bool RemoveArticleFromCart(int IdNutzer, int articleId)
+        {
+            return true;
+        }
+
 
     }
 }

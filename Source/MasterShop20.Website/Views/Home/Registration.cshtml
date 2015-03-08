@@ -1,0 +1,31 @@
+﻿@using MasterShop20.Website.Models
+@model dynamic
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Registration</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, "class='form-horizontal'"))
+{
+    <div class="form-group col-sm-5">
+        <input type="text" class="col-sm-2 form-control" name="lastname" placeholder="Nachname" />
+        <input type="text" class="col-sm-2 form-control" name="firstname" placeholder="Vorname" />
+    </div>
+    <div class="form-group col-sm-5">
+        <input type="text" class="col-sm-2 form-control" name="street" placeholder="Straße" />
+        <input type="text" class="col-sm-2 form-control" name="housenr" placeholder="Hausnummer" />
+    </div>
+    <div class="form-group col-sm-5">
+        <input type="text" class="col-sm-2 form-control" name="postalcode" placeholder="PLZ" />
+        <input type="text" class="col-sm-2 form-control" name="place" placeholder="Ort" />
+    </div>
+    <div class="form-group col-sm-5">
+        <input type="text" class="col-sm-2 form-control" name="mailaddress" placeholder="Email" />
+        <input type="text" class="col-sm-2 form-control" name="password" placeholder="Passwort" />
+    </div>
+    <div class="form-group col-sm-5">
+        <input type="submit" value="registrieren" class="btn btn-success col-sm-1 form-control" />
+    </div>
+}
