@@ -12,6 +12,19 @@ $(document).ready(function () {
     });
 });
 
+function nextPage(page) {
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetArticleViewModels",
+        data: {
+            page: page,
+        },
+        success: function (msg) {
+            $("#articleListResult").html(msg);
+        }
+    });
+}
+
 function getArticleViewModelsByGroup(subgroupname) {
     $.ajax({
         type: "POST",
