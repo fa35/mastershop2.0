@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
+using MasterShop20.Website.Infrastructure;
 
 namespace MasterShop20.Website.Controllers
 {
@@ -12,9 +14,20 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Profile/
 
+        private DbOrganizer _organizer;
+
+        public ProfileController()
+        {
+            _organizer = new DbOrganizer();
+        }
+
         public ActionResult Index()
         {
-            return View(new Registration());
+            string nutzer = string.Empty;
+            if (Request.Cookies["user"] != null)
+                nutzer = Request.Cookies["user"].Value;
+
+            return View("Index",nutzer);
         }
 
     }
