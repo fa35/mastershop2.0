@@ -9,13 +9,13 @@
         @{
         foreach (var haupt in Model)
         {
-            <li><a href="#" onclick=" toggleVisibilityUntergruppe(this) ">@haupt.Key </a>
+            <li><a href="#" onclick=" toggleVisibilityUntergruppe(this) ">@haupt.Key</a>
 
                 <ul id="unter_@haupt.Key" style="display: none;">
                     @{
             foreach (var unter in haupt.Value)
             {
-                        <li><a href="#">@unter </a></li>
+                    <li><a href="#" onclick="getArticleViewModelsByGroup(@unter)">@unter</a></li>
             }
                     }
                 </ul>

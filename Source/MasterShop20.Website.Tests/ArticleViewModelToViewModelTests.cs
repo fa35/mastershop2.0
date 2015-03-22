@@ -26,10 +26,16 @@ namespace MasterShop20.Website.Tests
             };
         }
 
+        [TearDown]
+        public void Teardown()
+        {
+            
+        }
 
         [Test]
         public void TestBruttoPreisCalculation()
         {
+
             var avm = new ArticleViewModel().ToViewModel(_testArticle);
 
             Assert.AreEqual(119, avm.Price);

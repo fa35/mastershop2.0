@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Web.Mvc;
+using MasterShop20.Website.Database;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
 
@@ -35,9 +37,14 @@ namespace MasterShop20.Website.Controllers
             }
         }
 
-        public ActionResult GetArticleViewModels(int page = 0, int amount = 10)
+        public ActionResult GetArticleViewModels(int page = 0, int amount = 10, string subgroupName = "")
         {
-            var articles = _loader.GetArticleList(page, amount);
+            var articles = new List<Artikel>();
+            
+            if (!string.IsNullOrWhiteSpace(subgroupName))
+                articles = _loader.GetArticleListByGroups(page, amount, subgroupName);
+            else
+                articles = _loader.GetArticleList(page, amount);
 
             var vms = new List<ArticleViewModel>();
 

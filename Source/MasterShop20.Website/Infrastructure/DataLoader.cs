@@ -126,6 +126,25 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
+        public List<Artikel> GetArticleListByGroups(int page, int amount, string subgroupName)
+        {
+            try
+            {
+                var subgroup = DatabaseDataContext.Untergruppes.FirstOrDefault(u => u.Titel.Equals(subgroupName));
+                if (subgroup != null)
+                    return DatabaseDataContext.Artikels
+                        .Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page*amount).Take(amount).ToList();
+                else
+                    return GetArticleList(page, amount);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, "Konnte Artikel nach UntergurppenID nicht holen", ex);
+                return null;
+            }
+        } 
+
+
         public Dictionary<string, List<string>> GetGroups()
         {
             var dic = new Dictionary<string, List<string>>();
