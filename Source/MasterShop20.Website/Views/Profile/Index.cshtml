@@ -1,17 +1,23 @@
-﻿@using System.Web.Mvc.Html
-@model MasterShop20.Website.Models.Registration
+﻿@using System.Collections.Concurrent
+@using System.Web.Mvc.Html
+@model MasterShop20.Website.Database.Nutzer
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Profil</h2>
+<script>
+    setUserId(@Model.IdNutzer)
+</script>
 
+<h2>Profil von @Model.Vorname @Model.Name</h2>
+<div>
 @using (Html.BeginForm())
 {
-    Html.Label("LastName");
-    Html.TextBox("Lastname");
-    Html.LabelFor(m => m.LastName);
-    Html.TextBoxFor(m => m.LastName);
+    <fieldset>
+        @Html.LabelFor(m => m.Vorname);
+        @Html.TextBoxFor(m => m.Vorname)
+    </fieldset>
 }
+    </div>
