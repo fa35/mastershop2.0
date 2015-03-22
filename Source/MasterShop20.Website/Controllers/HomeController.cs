@@ -35,9 +35,19 @@ namespace MasterShop20.Website.Controllers
             }
         }
 
-        public ActionResult GetArticleViewModels(int page = 0, int amount = 10)
+
+
+        public ActionResult GetArticleViewModels(int page = 0, int amount = 10, string subgroup = "")
         {
-            var articles = _loader.GetArticleList(page, amount);
+            List<Database.Artikel> articles;
+            if (subgroup == "")
+            {
+                articles = _loader.GetArticleList(page, amount);
+            }
+            else
+            {
+                articles = _loader.GetArticleList(page, amount, subgroup);
+            }
 
             var vms = new List<ArticleViewModel>();
 

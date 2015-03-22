@@ -113,11 +113,19 @@ namespace MasterShop20.Website.Infrastructure
             return articles;
         }
 
-        public List<Artikel> GetArticleList(int page, int amount)
+        public List<Artikel> GetArticleList(int page, int amount, string subgroupTitle = "")
         {
             try
             {
-                return DatabaseDataContext.Artikels.Skip(page * amount).Take(amount).ToList();
+                if (subgroupTitle == "")
+                {
+                    return DatabaseDataContext.Artikels.Skip(page*amount).Take(amount).ToList();
+                }
+                else
+                {
+                    Untergruppe subgroup = DatabaseDataContext.Untergruppes.FirstOrDefault(u => u.Titel == subgroupTitle);
+                    return DatabaseDataContext.Artikels.Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page * amount).Take(amount).ToList();
+                }
             }
             catch (Exception ex)
             {
