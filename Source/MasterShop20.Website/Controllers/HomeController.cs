@@ -20,7 +20,7 @@ namespace MasterShop20.Website.Controllers
         public ActionResult GetArticleViewModels(int page = 0, int amount = 10)
         {
             _organizer = new DataLoader();
-            var articles = _organizer.GetArticles(page, amount);
+            var articles = _organizer.GetArticleList(page, amount);
             var vms = new List<ArticleViewModel>();
 
             foreach (var artikel in articles)

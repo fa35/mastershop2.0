@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MasterShop20.Website.Converter;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
-using Newtonsoft.Json;
 using NLog;
 
 namespace MasterShop20.Website.Infrastructure
@@ -21,7 +19,7 @@ namespace MasterShop20.Website.Infrastructure
             try
             {
                 DatabaseDataContext = new DatabaseManager().GetDataContext();
-             
+
                 if (DatabaseDataContext == null)
                     return;
             }
@@ -31,56 +29,55 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
+
+
         #region check for existing data in db
 
         public bool CheckIfUserExists(Login login)
         {
-            if (!DatabaseDataContext.Nutzers.Any())
-                return false;
-
-            bool exists = false;
-
             try
             {
-                exists = DatabaseDataContext.Nutzers.Any(n => n.EMail.Equals(login.MailAddress) && n.Passwort.Equals(login.Password));
+                return DatabaseDataContext.Nutzers.Any(n => n.EMail.Equals(login.MailAddress) && n.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
             {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-
-                File.WriteAllText(path + @"\error.log", ex.ToString());
+                _logger.Log(LogLevel.Fatal, "Fehler beim Überprufen auf vorhandenen Nutzer", ex);
+                return false;
             }
-
-            return exists;
         }
 
         public bool CheckRegistrationData(Registration regist)
         {
-            if (!DatabaseDataContext.Nutzers.Any())
-                return false;
 
             var nutzers = new List<Nutzer>();
+            try
+            {
+                nutzers = DatabaseDataContext.Nutzers.Where(p => p.EMail.Equals(regist.MailAddress)).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "Fehler beim Überprufen auf vorhandenen Nutzer", ex);
+            }
 
-            nutzers = DatabaseDataContext.Nutzers.Where(p => p.EMail.Equals(regist.MailAddress)).ToList();
-
-            var exists = nutzers.Count >= 1;
-
-            if (exists)
-                return true;
-            else
-                return false;
+            return nutzers.Count >= 1;
         }
 
         #endregion
 
 
-        public Nutzer ConvertLoginToNutzer(Login login)
+
+        public Nutzer GetNutzerByLogin(Login login)
         {
-            var nutzer = DatabaseDataContext.Nutzers.FirstOrDefault(
-                    p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
-            return nutzer;
+            try
+            {
+                return DatabaseDataContext.Nutzers.FirstOrDefault(p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "Logindaten passen zu keinem Nutzer", ex);
+                return null;
+            }
+
         }
 
         public Nutzer CreateNutzer(Registration regist)
@@ -96,37 +93,22 @@ namespace MasterShop20.Website.Infrastructure
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Konnte neuen Nutzer nicht anlegen", ex);
+                return null;
             }
-            return null;
         }
 
-
-        public List<Artikel> GetArticlesByIds(List<int> articleIds)
+        public List<Artikel> GetArticleList(int page, int amount)
         {
-            var articles = new List<Artikel>();
-
-            foreach (var id in articleIds)
-                articles.Add(DatabaseDataContext.Artikels.FirstOrDefault(p => p.IdArtikel == id));
-
-            return articles;
-        }
-
-        public List<Artikel> GetArticles(int page, int amount)
-        {
-            var articles_list = new List<Artikel>();
-
             try
             {
-                articles_list = DatabaseDataContext.Artikels.Skip(page * amount).Take(amount).ToList();
+                return DatabaseDataContext.Artikels.Skip(page * amount).Take(amount).ToList();
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Konnte Artikel nicht holen", ex);
+                return null;
             }
-            return articles_list;
         }
-
-
 
         public Dictionary<string, List<string>> GetGroups()
         {
@@ -134,62 +116,68 @@ namespace MasterShop20.Website.Infrastructure
 
             foreach (var hauptgruppe in DatabaseDataContext.Hauptgruppes)
             {
-                dic.Add(hauptgruppe.Titel, DatabaseDataContext.Untergruppes
-                    .Where(u => u.IdHauptgruppe == hauptgruppe.IdHauptgruppe)
-                        .Select(p => p.Titel)
-                        .ToList());
-            }
+                dic.Add(
 
+                    hauptgruppe.Titel,
+                    DatabaseDataContext.Untergruppes
+                    .Where(u => u.IdHauptgruppe == hauptgruppe.IdHauptgruppe)
+                    .Select(p => p.Titel)
+                    .ToList()
+                );
+            }
             return dic;
         }
 
         public decimal GetSteuersatz(int idSteuersatz)
         {
-            decimal st = 19;
             try
             {
-                st = DatabaseDataContext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
+                return DatabaseDataContext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, "Konnte Steuersatz nicht holen", ex);
+                _logger.Log(LogLevel.Fatal, "Konnte Steuersatz nicht laden", ex);
+                return 19;
             }
-
-            return st;
         }
 
         public Artikel GetArticleById(int id)
         {
-            return DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
+            try
+            {
+                return DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "ArtikelId nicht in vorhanden", ex);
+                return null;
+            }
         }
 
-        public Bestellung GetBestellungByNutzerId(string userid)
+        public Bestellung GetBestellungByNutzerId(int idUser)
         {
-            int idUser;
-            int.TryParse(userid, out idUser);
-
-            return DatabaseDataContext.Bestellungs.FirstOrDefault(p => p.IdNutzer == idUser && p.Bezahlt == false);
+            try
+            {
+                return DatabaseDataContext.Bestellungs.FirstOrDefault(p => p.IdNutzer == idUser && p.Bezahlt == false);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "Bestellung von dieser NutzerId nicht in vorhanden", ex);
+                return null;
+            }
         }
 
         public List<BestellungsDetail> GetDetailsByBestellungId(int idBestellung)
         {
-            return DatabaseDataContext.BestellungsDetails.Where(d => d.IdBestellung == idBestellung).ToList();
-        }
-
-        public IEnumerable<Artikel> ConvertDetailsToArticles(string articlesId)
-        {
-            var ids = JsonConvert.DeserializeObject<List<int>>(articlesId);
-            var articles = new List<Artikel>();
-
-            foreach (var id in ids)
+            try
             {
-                var article = DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
-
-                if (article != null)
-                    articles.Add(article);
+                return DatabaseDataContext.BestellungsDetails.Where(d => d.IdBestellung == idBestellung).ToList();
             }
-
-            return articles;
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "Details für diese BestellungsId nicht in vorhanden", ex);
+                return null;
+            }
         }
     }
 }

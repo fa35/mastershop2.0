@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MasterShop20.Website.Database;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
 using Newtonsoft.Json;
@@ -27,7 +28,14 @@ namespace MasterShop20.Website.Controllers
             if (Request.Cookies["articles"] != null)
                 articlesId = Request.Cookies["articles"].Value;
 
-            var articles = _organizer.ConvertDetailsToArticles(articlesId);
+            var ids = JsonConvert.DeserializeObject<List<int>>(articlesId);
+
+            var articles = new List<Artikel>();
+
+            foreach (var id in ids)
+            {
+                articles.Add(_organizer.GetArticleById(id));
+            }
 
             var avms = new List<ArticleViewModel>();
 

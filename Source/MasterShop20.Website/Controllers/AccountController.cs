@@ -26,12 +26,12 @@ namespace MasterShop20.Website.Controllers
                 return View("Error");
 
             // hole nutzer daten
-            var nutzer = _organizer.ConvertLoginToNutzer(login);
+            var nutzer = _organizer.GetNutzerByLogin(login);
 
             if (nutzer != null)
             {
                 Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
-                return View("AccountSettings", nutzer);
+                return View("../Home/Index");
             }
 
             return View("Error");
@@ -50,7 +50,7 @@ namespace MasterShop20.Website.Controllers
             var nutzer = _organizer.CreateNutzer(regist);
             Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
 
-            return View("AccountSettings", nutzer);
+            return View("../Home/Index");
         }
 
     }
