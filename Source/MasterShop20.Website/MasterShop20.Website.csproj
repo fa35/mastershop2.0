@@ -137,6 +137,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Converter\ModelsConverter.cs" />
     <Compile Include="Database\MasterShop.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -145,8 +146,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\DatabaseManager.cs" />
     <Compile Include="Infrastructure\DataLoader.cs" />
-    <Compile Include="Infrastructure\DbOrganizer.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
     <Compile Include="Models\DetailsViewModel.cs" />
     <Compile Include="Models\LoginRegistration.cs" />

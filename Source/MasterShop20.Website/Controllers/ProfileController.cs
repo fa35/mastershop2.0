@@ -14,11 +14,11 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Profile/
 
-        private DbOrganizer _organizer;
+        private DataLoader _organizer;
 
         public ProfileController()
         {
-            _organizer = new DbOrganizer();
+            _organizer = new DataLoader();
         }
 
         public ActionResult Index()

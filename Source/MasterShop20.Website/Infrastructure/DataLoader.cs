@@ -21,6 +21,9 @@ namespace MasterShop20.Website.Infrastructure
             try
             {
                 DatabaseDataContext = new DatabaseManager().GetDataContext();
+             
+                if (DatabaseDataContext == null)
+                    return;
             }
             catch (Exception ex)
             {
