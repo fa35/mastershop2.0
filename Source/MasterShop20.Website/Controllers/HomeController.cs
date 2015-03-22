@@ -25,11 +25,14 @@ namespace MasterShop20.Website.Controllers
 
         private void RemoveCookies()
         {
-            if (Request.Cookies["articles"] != null)
-                Response.Cookies["articles"].Expires = DateTime.Now.AddDays(-1);
+            if (Request != null)
+            {
+                if (Request.Cookies["articles"] != null)
+                    Response.Cookies["articles"].Expires = DateTime.Now.AddDays(-1);
 
-            if (Request.Cookies["user"] != null)
-                Response.Cookies["user"].Expires = DateTime.Now.AddDays(-1);
+                if (Request.Cookies["user"] != null)
+                    Response.Cookies["user"].Expires = DateTime.Now.AddDays(-1);
+            }
         }
 
         public ActionResult GetArticleViewModels(int page = 0, int amount = 10)

@@ -7,17 +7,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script>
-    setUserId(@Model.IdNutzer)
-</script>
-
+@{/*
+    <script>
+        setUserId(@Model.IdNutzer)
+    </script>
+*/}
 <h2>Profil von @Model.Vorname @Model.Name</h2>
 <div>
-@using (Html.BeginForm())
+@using (Html.BeginForm("handle_form","Profile"))
 {
     <fieldset>
-        @Html.LabelFor(m => m.Vorname);
+        <legend>Personalia:</legend>
+        @Html.LabelFor(m => m.Vorname, "Vorname")
         @Html.TextBoxFor(m => m.Vorname)
+        @Html.LabelFor(m => m.Name, "Nachname")
+        @Html.TextBoxFor(m => m.Name)
     </fieldset>
+    <input type="submit" value="Submit" />
 }
     </div>

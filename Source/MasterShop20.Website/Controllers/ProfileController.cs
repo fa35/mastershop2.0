@@ -15,27 +15,50 @@ namespace MasterShop20.Website.Controllers
         // GET: /Profile/
 
         private DataLoader _loader;
+        private Nutzer _nutzer;
+        private int _nutzerID;
 
         public ProfileController()
         {
             _loader = new DataLoader();
         }
 
-        public ActionResult Index()
+        private void _setNutzer()
         {
-            string nutzerId = string.Empty;
-            Nutzer nutzer = new Nutzer();
             if (Request.Cookies["user"] != null)
             {
-                nutzerId = Request.Cookies["user"].Value;
-                int nutzerInt;
-                int.TryParse(nutzerId, out nutzerInt);
-                nutzer = _organizer.GetNutzerById(nutzerInt);
-
+                string nutzerId = Request.Cookies["user"].Value;
+                int.TryParse(nutzerId, out _nutzerID);
+                this._nutzer = _loader.GetNutzerById(_nutzerID);
             }
-
-            return View("Index",nutzer);
         }
 
+        public ActionResult Index()
+        {
+            _setNutzer();
+            if (this._nutzer != null)
+            {
+                return View("Index", _nutzer);
+            }
+            else
+            {
+                return View("Login");
+            }
+
+            
+        }
+
+        public ActionResult handle_form(string vorname, string name)
+        {
+            _setNutzer();
+            IQueryable<Nutzer> query = _loader.DatabaseDataContext.Nutzers.Where(n => n.IdNutzer == _nutzerID);
+            foreach ( Nutzer user in query)
+            {
+                user.Name = name;
+                user.Vorname = vorname;
+            }
+            _loader.DatabaseDataContext.SubmitChanges();
+            return Index();
+        }
     }
 }
