@@ -10,7 +10,7 @@ namespace MasterShop20.Website.Controllers
     {
         // GET: /Home/
 
-        private DbOrganizer _organizer;
+        private DataLoader _organizer;
 
         public ActionResult Index()
         {
@@ -19,7 +19,7 @@ namespace MasterShop20.Website.Controllers
 
         public ActionResult GetArticleViewModels(int page = 0, int amount = 10)
         {
-            _organizer = new DbOrganizer();
+            _organizer = new DataLoader();
             var articles = _organizer.GetArticles(page, amount);
             var vms = new List<ArticleViewModel>();
 
@@ -34,7 +34,7 @@ namespace MasterShop20.Website.Controllers
 
         public string GetArticleDescription(string articleId)
         {
-            _organizer = new DbOrganizer();
+            _organizer = new DataLoader();
 
             var id = 0;
             int.TryParse(articleId, out id);
@@ -47,7 +47,7 @@ namespace MasterShop20.Website.Controllers
 
         public ActionResult GetNavigationGroups()
         {
-            _organizer = new DbOrganizer();
+            _organizer = new DataLoader();
             var dic = _organizer.GetGroups();
             return PartialView("_NavigationGroups", dic);
         } // == GetNavigationModel

@@ -5,14 +5,14 @@ using NUnit.Framework;
 namespace MasterShop20.Website.Tests
 {
     [TestFixture]
-    class ToViewModelTests
+    class ArticleViewModelToViewModelTests
     {
-        private Artikel _goodArticle ;
+        private Artikel _testArticle ;
        
         [SetUp] // SetUp wird immer vor einem Test der Testklasse aufgerufen
         public void Setup()
         {
-            _goodArticle = new Artikel
+            _testArticle = new Artikel
             {
                 IdArtikel = 1,
                 Beschreibung = "Test - Beschreibung: Ist hier nun über 100 Zeichen lang damit die Methode ToViewModel richtig getestet werden kann. Dort wird nämlich die Beschreibung auf 100 Zeichen gekürzt, falls die Beschreibung bzw. der Text darin länger als 100 Zeichen ist.",
@@ -24,22 +24,26 @@ namespace MasterShop20.Website.Tests
                 NettoPreis = 100,
                 Titel = "der Titel"
             };
-
         }
 
 
         [Test]
-        public void TestArticleViewModel()
+        public void TestBruttoPreisCalculation()
         {
-            var avm = new ArticleViewModel().ToViewModel(_goodArticle);
-
-            Assert.GreaterOrEqual(_goodArticle.Beschreibung.Length, 100);
+            var avm = new ArticleViewModel().ToViewModel(_testArticle);
 
             Assert.AreEqual(119, avm.Price);
-
-            Assert.LessOrEqual(avm.Description.Length, 100);
         }
 
+
+        [Test]
+        public void TestDescriptionLength()
+        {
+            var avm = new ArticleViewModel().ToViewModel(_testArticle);
+
+            Assert.GreaterOrEqual(_testArticle.Beschreibung.Length, 100);
+            Assert.LessOrEqual(avm.Description.Length, 100);
+        }
 
     }
 }

@@ -13,11 +13,11 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Cart/
 
-        private DbOrganizer _organizer;
+        private DataLoader _organizer;
 
         public CartController()
         {
-            _organizer = new DbOrganizer();
+            _organizer = new DataLoader();
         }
 
         public ActionResult Index()
