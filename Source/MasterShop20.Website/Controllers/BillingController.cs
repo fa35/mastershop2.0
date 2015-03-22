@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MasterShop20.Website.Database;
+﻿using System.Web.Mvc;
 using MasterShop20.Website.Models;
 
 namespace MasterShop20.Website.Controllers
@@ -19,8 +14,6 @@ namespace MasterShop20.Website.Controllers
             rvm.Name = "Rechnungsname";
 
             return View("Payment", rvm);
-
-            return View("Error");
         }
 
     }
