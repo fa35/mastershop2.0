@@ -23,9 +23,16 @@ namespace MasterShop20.Website.Controllers
 
         public ActionResult Index()
         {
-            string nutzer = string.Empty;
+            string nutzerId = string.Empty;
+            Nutzer nutzer = new Nutzer();
             if (Request.Cookies["user"] != null)
-                nutzer = Request.Cookies["user"].Value;
+            {
+                nutzerId = Request.Cookies["user"].Value;
+                int nutzerInt;
+                int.TryParse(nutzerId, out nutzerInt);
+                nutzer = _organizer.GetNutzerById(nutzerInt);
+
+            }
 
             return View("Index",nutzer);
         }

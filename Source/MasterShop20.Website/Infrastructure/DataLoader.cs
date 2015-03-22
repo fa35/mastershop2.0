@@ -100,6 +100,11 @@ namespace MasterShop20.Website.Infrastructure
             return null;
         }
 
+        public Nutzer GetNutzerById(int userId)
+        {
+            Nutzer nutzer = DatabaseDataContext.Nutzers.FirstOrDefault(n => n.IdNutzer == userId);
+            return nutzer;
+        }
 
         public List<Artikel> GetArticlesByIds(List<int> articleIds)
         {
