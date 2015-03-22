@@ -12,6 +12,6 @@ $(document).ready(function () {
 
 
 function toggleVisibilityUntergruppe(element) {
-    var untergruppen = document.getElementById('unter_' + $(element).text());
-    $(untergruppen).fadeToggle("slow");
+    var $untergruppen = jQuery('#unter_' + $(element).text());
+    $untergruppen.fadeToggle("slow");
 }
