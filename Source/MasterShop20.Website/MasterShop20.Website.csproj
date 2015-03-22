@@ -197,9 +197,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\AccountSettings.cshtml" />
-    <Content Include="Views\Home\PricacyPolicy.cshtml" />
-    <Content Include="Views\Home\LegalNotice.cshtml" />
-    <Content Include="Views\Home\GeneralBusinessTerms.cshtml" />
+    <Content Include="Views\Shared\PricacyPolicy.cshtml" />
+    <Content Include="Views\Shared\LegalNotice.cshtml" />
+    <Content Include="Views\Shared\GeneralBusinessTerms.cshtml" />
     <Content Include="Views\Shared\Login.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
@@ -213,10 +213,10 @@
     <None Include="Database\MasterShop.dbml.layout">
       <DependentUpon>MasterShop.dbml</DependentUpon>
     </None>
-    <Content Include="Views\Home\_NavigationGroups.cshtml" />
-    <Content Include="Views\Home\_ArticlesList.cshtml" />
+    <Content Include="Views\Shared\_NavigationGroups.cshtml" />
+    <Content Include="Views\Shared\_ArticlesList.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Home\Registration.cshtml" />
+    <Content Include="Views\Shared\Registration.cshtml" />
     <Content Include="Views\Billing\Payment.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
