@@ -130,6 +130,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BillingController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -142,9 +143,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DbOrganizer.cs" />
-    <Compile Include="Infrastructure\SessionManager.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
+    <Compile Include="Models\DetailsViewModel.cs" />
     <Compile Include="Models\LoginRegistration.cs" />
+    <Compile Include="Models\RechnungViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +198,6 @@
     <Content Include="Views\Shared\Login.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -211,6 +212,7 @@
     <Content Include="Views\Home\_ArticlesList.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Home\Registration.cshtml" />
+    <Content Include="Views\Billing\Payment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

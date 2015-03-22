@@ -45,13 +45,10 @@ function reduceArticleDescription(articleId) {
 
 function addArticleToCart(articleId) {
 
-    var userid = document.getElementById('currentUserId').val();
-
     $.ajax({
         type: "POST",
         url: "/Cart/AddArticleToCart",
         data: {
-            idNutzer: userid,
             articleId: articleId
         },
         success: function (result) {

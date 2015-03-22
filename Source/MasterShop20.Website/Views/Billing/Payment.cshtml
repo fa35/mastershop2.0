@@ -1,0 +1,33 @@
+﻿@model MasterShop20.Website.Models.RechnungViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Datum</h2>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Artikel</th>
+            <th>Nettopreis</th>
+            <th>Mwst</th>
+            <th>Anzahl</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var d in Model.Details)
+        {
+            <tr>
+                <td>@d.Name</td>
+                <td>@d.EinzelNettopreis</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
 
@@ -9,21 +10,29 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Account/
 
+        private DbOrganizer _organizer;
+
+        public AccountController()
+        {
+            _organizer = new DbOrganizer();
+        }
+
         public ActionResult Login(Login login) // aktuelle Seite sollte mitübergeben werden, sodass der Nutzer nachdem Login wieder dort hinkommt wo er war
         {
-            var organizer = new DbOrganizer();
-
             // suche in db nach passenden daten
-            var exits = organizer.CheckLoginData(login);
+            var exits = _organizer.CheckIfUserExists(login);
 
             if (!exits)
                 return View("Error");
 
             // hole nutzer daten
-            var nutzer = organizer.ConvertLoginToNutzer(login);
+            var nutzer = _organizer.ConvertLoginToNutzer(login);
 
             if (nutzer != null)
+            {
+                Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
                 return View("AccountSettings", nutzer);
+            }
 
             return View("Error");
         }
@@ -31,16 +40,16 @@ namespace MasterShop20.Website.Controllers
 
         public ActionResult Register(Registration regist)
         {
-            var organizer = new DbOrganizer();
             // suche in db nach regist der bereits nutzer ist, wenn nicht insert & save
-
-            var exists = organizer.CheckRegistrationData(regist);
+            var exists = _organizer.CheckRegistrationData(regist);
 
             if (exists)
-                return View("Error");
+                return View("Login");
 
             // erstelle nutzer
-            var nutzer = organizer.CreateNutzer(regist);
+            var nutzer = _organizer.CreateNutzer(regist);
+            Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
+
             return View("AccountSettings", nutzer);
         }
 

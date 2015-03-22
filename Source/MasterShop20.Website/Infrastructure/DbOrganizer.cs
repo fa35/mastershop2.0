@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
+using Newtonsoft.Json;
+using WebGrease.Css.Extensions;
 
 namespace MasterShop20.Website.Infrastructure
 {
@@ -20,18 +22,17 @@ namespace MasterShop20.Website.Infrastructure
         }
 
 
-        public bool CheckLoginData(Login login)
+        public bool CheckIfUserExists(Login login)
         {
             if (!_datacontext.Nutzers.Any())
                 return false;
 
-            var exists = false;
+            bool exists = false;
 
             try
             {
-                exists = _datacontext.Nutzers.Any(n => 
-                    n.EMail.Equals(login.MailAddress, StringComparison.InvariantCultureIgnoreCase)
-                    && n.Passwort.Equals(login.Password));
+                exists = _datacontext.Nutzers.Any(n =>
+                    n.EMail.Equals(login.MailAddress) && n.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
             {
@@ -48,35 +49,25 @@ namespace MasterShop20.Website.Infrastructure
 
         public bool CheckRegistrationData(Registration regist)
         {
-
             if (!_datacontext.Nutzers.Any())
                 return false;
 
-            var exists = _datacontext.Nutzers.Any(
-                p =>
-                    p.Vorname.Equals(regist.FirstName, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.Name.Equals(regist.LastName, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.EMail.Equals(regist.MailAddress, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.HausNr.Equals(regist.HouseNr, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.Ort.Equals(regist.Place, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.Passwort.Equals(regist.Password) &&
-                    p.Strasse.Equals(regist.Street, StringComparison.InvariantCultureIgnoreCase) &&
-                    p.PLZ.ToString().Equals(regist.PostalCode)
-                    );
+            var nutzers = new List<Nutzer>();
 
-            return exists;
+            nutzers = _datacontext.Nutzers.Where(p => p.EMail.Equals(regist.MailAddress)).ToList();
+
+            var exists = nutzers.Count >= 1;
+
+            if(exists)
+                return true;
+            else
+                return false;
         }
 
         public Nutzer ConvertLoginToNutzer(Login login)
         {
             var nutzer = _datacontext.Nutzers.FirstOrDefault(
-                    p =>
-                        p.EMail.Equals(login.MailAddress,
-                            StringComparison.InvariantCultureIgnoreCase) && p.Passwort.Equals(login.Password));
-
-            if (nutzer != null)
-                new SessionManager().CreateUserSession(nutzer.IdNutzer);
-
+                    p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
             return nutzer;
         }
 
@@ -97,8 +88,6 @@ namespace MasterShop20.Website.Infrastructure
             {
                 _datacontext.Nutzers.InsertOnSubmit(nutzer);
                 _datacontext.SubmitChanges();
-
-                new SessionManager().CreateUserSession(nutzer.IdNutzer);
                 return nutzer;
             }
             catch (Exception)
@@ -108,22 +97,6 @@ namespace MasterShop20.Website.Infrastructure
                 throw;
             }
         }
-
-        public long? CheckCurrentLogin(int idNutzer)
-        {
-            var session = _datacontext.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
-            if (session != null)
-                return session.IdSession;
-
-            return null;
-        }
-
-        public Session GetSessionData(int idNutzer)
-        {
-            var session = _datacontext.Sessions.FirstOrDefault(n => n.IdNutzer == idNutzer);
-            return session ?? null; // = kurzschreibweise für if(session != null) return session else return null
-        }
-
 
 
         public List<Artikel> GetArticlesByIds(List<int> articleIds)
@@ -194,20 +167,33 @@ namespace MasterShop20.Website.Infrastructure
             return _datacontext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
         }
 
-        public bool StoreSession(Session session)
+        public Bestellung GetBestellungByNutzerId(string userid)
         {
-            try
-            {
-                _datacontext.Sessions.InsertOnSubmit(session);
-                _datacontext.SubmitChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;   
-                throw ex;
-            }
+            int idUser = 0;
+            int.TryParse(userid, out idUser);
+
+            return _datacontext.Bestellungs.FirstOrDefault(p => p.IdNutzer == idUser && p.Bezahlt == false);
         }
 
+        public List<BestellungsDetail> GetDetailsByBestellungId(int idBestellung)
+        {
+            return _datacontext.BestellungsDetails.Where(d => d.IdBestellung == idBestellung).ToList();
+        }
+
+        public IEnumerable<Artikel> ConvertDetailsToArticles(string articlesId)
+        {
+            var ids = JsonConvert.DeserializeObject<List<int>>(articlesId);
+            var articles = new List<Artikel>();
+
+            foreach (var id in ids)
+            {
+                var article = _datacontext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
+
+                if (article != null)
+                    articles.Add(article);
+            }
+
+            return articles;
+        }
     }
 }

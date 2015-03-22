@@ -6,17 +6,6 @@ $("#logo").on("click", function () {
 });
 
 
-
-
-function setUserId(idNutzer) {
-
-    var hiddenfield = document.getElementById('currentUserId');
-    hiddenfield.value = idNutzer;
-
-}
-
-
-
 function removeArticleFromCart(idArticle) {
     
     var userid = document.getElementById('currentUserId').val();
@@ -25,7 +14,6 @@ function removeArticleFromCart(idArticle) {
         type: "POST",
         url: "/Cart/RemoveArticleFromCart",
         data: {
-            idNutzer: userid,
             articleId: articleId
         },
         success: function (result) {

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
@@ -11,74 +13,78 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Cart/
 
-        public ActionResult Index(int idNutzer)
+        private DbOrganizer _organizer;
+
+        public CartController()
         {
-            // zeige mir den Warenkorb des Nutzers falls dieser eingeloggt ist
+            _organizer = new DbOrganizer();
+        }
 
-            // überprüfe ob nutzer nicht schon ausgeloggt
+        public ActionResult Index()
+        {
+            var articlesId = string.Empty;
+            // versuche aus den cookies die artikel ids zu holen
+            if (Request.Cookies["articles"] != null)
+                articlesId = Request.Cookies["articles"].Value;
 
-            var organizer = new DbOrganizer();
+            var articles = _organizer.ConvertDetailsToArticles(articlesId);
 
-            var sessionId = organizer.CheckCurrentLogin(idNutzer);
+            var avms = new List<ArticleViewModel>();
 
-            if (sessionId == null) // nutzer nicht eingeloggt
+            foreach (var art in articles)
             {
-                return View("Login"); // nutzer solll sich einloggen
-            }
-            else
-            {
-                // hole session daten
-
-                var session = organizer.GetSessionData(idNutzer);
-                var articleIds = JsonConvert.DeserializeObject<List<int>>(session.ArtikelInwarenkorb);
-
-                var articles = organizer.GetArticlesByIds(articleIds);
-
-
-                var avms = new List<ArticleViewModel>();
-
-                foreach (var art in articles)
-                {
-                    var steuersatz = organizer.GetSteuersatz(art.IdSteuersatz);
-                    avms.Add(new ArticleViewModel().ToViewModel(art, steuersatz));
-                }
-
-                return View("Index", avms);
+                var steuersatz = _organizer.GetSteuersatz(art.IdSteuersatz);
+                avms.Add(new ArticleViewModel().ToViewModel(art, steuersatz));
             }
 
+            return View("Index", avms);
 
         }
 
 
-        public bool AddArticleToCart(int idNutzer, int articleId)
+        public bool AddArticleToCart(int articleId)
         {
-            var organizer = new DbOrganizer();
-            var sessionId = organizer.CheckCurrentLogin(idNutzer);
+            var articlesId = string.Empty;
+            // versuche aus den cookies die artikel ids zu holen
+            if (Request.Cookies["articles"] != null)
+                articlesId = Request.Cookies["articles"].Value;
 
-            if (sessionId == null) // nutzer nicht eingeloggt
+            if (string.IsNullOrWhiteSpace(articlesId))
             {
-                return false; // nutzer muss isch erst einloggen
+                var list = new List<int>();
+                list.Add(articleId);
+                var content = JsonConvert.SerializeObject(list);
+                Response.Cookies.Add(new HttpCookie("articles") { Value = content });
             }
             else
             {
-                // hole session daten
-                var session = organizer.GetSessionData(idNutzer);
-                // deserialire zu int liste
-                var articleIds = JsonConvert.DeserializeObject<List<int>>(session.ArtikelInwarenkorb);
-                // füge neue id hinzu
-                articleIds.Add(articleId);
-                // serialisiere die id liste
-                var content = JsonConvert.SerializeObject(articleIds);
-                // füge erweiterte liste session hinzu
-                session.ArtikelInwarenkorb = content;
-                // übergebe session an organizer zum speichern
-                return organizer.StoreSession(session);
+                var articlesIdList = JsonConvert.DeserializeObject<List<int>>(articlesId);
+
+                if (articlesIdList != null)
+                    articlesIdList.Add(articleId);
+
+                var content = JsonConvert.SerializeObject(articlesIdList);
+                Response.Cookies.Add(new HttpCookie("articles") { Value = content });
             }
+            return true;
         }
 
 
-        public bool RemoveArticleFromCart(int IdNutzer, int articleId)
+        public bool RemoveArticleFromCart(int articleId)
         {
+            var articlesId = string.Empty;
+            // versuche aus den cookies die artikel ids zu holen
+            if (Request.Cookies["articles"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["articles"].Value))
+                articlesId = Request.Cookies["articles"].Value;
+            else
+                return false;
+
+            var list = JsonConvert.DeserializeObject<List<int>>(articlesId);
+
+            list.Remove(articleId);
+
+            var content = JsonConvert.SerializeObject(list);
+            Response.Cookies.Add(new HttpCookie("articles") { Value = content });
             return true;
         }
 
