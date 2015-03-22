@@ -10,44 +10,42 @@ namespace MasterShop20.Website.Controllers
         //
         // GET: /Account/
 
-        private DataLoader _organizer;
+        private DataLoader _loader;
 
         public AccountController()
         {
-            _organizer = new DataLoader();
+            _loader = new DataLoader();
         }
 
-        public ActionResult Login(Login login) // aktuelle Seite sollte mitübergeben werden, sodass der Nutzer nachdem Login wieder dort hinkommt wo er war
+        public ActionResult Login(Login login)
         {
             // suche in db nach passenden daten
-            var exits = _organizer.CheckIfUserExists(login);
+            var exits = _loader.CheckIfUserExists(login);
 
             if (!exits)
                 return View("Error");
 
             // hole nutzer daten
-            var nutzer = _organizer.GetNutzerByLogin(login);
+            var nutzer = _loader.GetNutzerByLogin(login);
 
-            if (nutzer != null)
-            {
-                Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
-                return View("../Home/Index");
-            }
+            if (nutzer == null)
+                return View("Error");
 
-            return View("Error");
+            Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
+            return View("../Home/Index");
         }
 
 
-        public ActionResult Register(Registration regist)
+        public ActionResult Register(Registration registration)
         {
-            // suche in db nach regist der bereits nutzer ist, wenn nicht insert & save
-            var exists = _organizer.CheckRegistrationData(regist);
+            // suche in db nach registration der bereits nutzer ist, wenn nicht insert & save
+            var exists = _loader.CheckRegistrationData(registration);
 
             if (exists)
                 return View("Login");
 
             // erstelle nutzer
-            var nutzer = _organizer.CreateNutzer(regist);
+            var nutzer = _loader.CreateNutzer(registration);
             Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
 
             return View("../Home/Index");

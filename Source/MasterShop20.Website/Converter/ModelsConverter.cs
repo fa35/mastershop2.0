@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Models;
-using Newtonsoft.Json;
 using NLog;
 
 namespace MasterShop20.Website.Converter
