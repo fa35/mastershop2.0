@@ -95,8 +95,6 @@ namespace MasterShop20.Website.Infrastructure
                 _logger.Log(LogLevel.Error, "Konnte neuen Nutzer nicht anlegen", ex);
                 return null;
             }
-<<<<<<< HEAD
-            return null;
         }
 
         public Nutzer GetNutzerById(int userId)
@@ -113,8 +111,6 @@ namespace MasterShop20.Website.Infrastructure
                 articles.Add(DatabaseDataContext.Artikels.FirstOrDefault(p => p.IdArtikel == id));
 
             return articles;
-=======
->>>>>>> origin/master
         }
 
         public List<Artikel> GetArticleList(int page, int amount)
