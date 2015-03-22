@@ -18,7 +18,7 @@ function getArticleViewModelsByGroup(subgroupname) {
         url: "/Home/GetArticleViewModels",
         data: {
             page: $("#selectedPage").val(),
-            subgroupName: subgroupname 
+            subgroupName: $(subgroupname).text()
         },
         success: function (msg) {
             $("#articleListResult").html(msg);
