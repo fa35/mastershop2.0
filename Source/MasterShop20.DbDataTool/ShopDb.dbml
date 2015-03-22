@@ -39,20 +39,34 @@
       <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Session" Member="Sessions">
-    <Type Name="Session">
-      <Column Name="IdSession" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="IdNutzer" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArtikelInwarenkorb" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="LoginDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LogoutDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Steuersatz" Member="Steuersatzs">
     <Type Name="Steuersatz">
       <Column Name="IdSteuersatz" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Titel" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
       <Column Name="Steuersatz" Member="Steuersatz1" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Bestellung" Member="Bestellungs">
+    <Type Name="Bestellung">
+      <Column Name="IdBestellung" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdNutzer" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Datum" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ZahlArt" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="ReName" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="ReVorname" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="ReStrasseNr" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="RePlzOrt" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Bezahlt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BestellungsDetail" Member="BestellungsDetails">
+    <Type Name="BestellungsDetail">
+      <Column Name="IdDetails" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdBestellung" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtikelName" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="NettoPreis" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="MwSt" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Anzahl" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

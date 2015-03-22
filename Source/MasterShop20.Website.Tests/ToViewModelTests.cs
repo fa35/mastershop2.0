@@ -24,7 +24,9 @@ namespace MasterShop20.Website.Tests
                 NettoPreis = 100,
                 Titel = "der Titel"
             };
+
         }
+
 
         [Test]
         public void TestArticleViewModel()
@@ -37,5 +39,7 @@ namespace MasterShop20.Website.Tests
 
             Assert.LessOrEqual(avm.Description.Length, 100);
         }
+
+
     }
 }
