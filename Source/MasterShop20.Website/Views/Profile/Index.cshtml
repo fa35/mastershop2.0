@@ -21,7 +21,16 @@
         @Html.LabelFor(m => m.Vorname, "Vorname")
         @Html.TextBoxFor(m => m.Vorname)
         @Html.LabelFor(m => m.Name, "Nachname")
-        @Html.TextBoxFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name)<br/>
+        @Html.LabelFor(m => m.Strasse, "Strasse")
+        @Html.TextBoxFor(m => m.Strasse)
+        @Html.LabelFor(m => m.HausNr, "Hausnummer")
+        @Html.TextBoxFor(m => m.HausNr)<br/>
+        @Html.LabelFor(m => m.PLZ, "PLZ")
+        @Html.TextBoxFor(m => m.PLZ)
+        @Html.LabelFor(m => m.Ort, "Ort")
+        @Html.TextBoxFor(m => m.Ort)<br/>
+
     </fieldset>
     <input type="submit" value="Submit" />
 }
