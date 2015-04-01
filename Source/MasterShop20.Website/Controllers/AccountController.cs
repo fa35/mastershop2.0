@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
 
@@ -11,10 +10,12 @@ namespace MasterShop20.Website.Controllers
         // GET: /Account/
 
         private DataLoader _loader;
+        private CookieManager _cookie;
 
         public AccountController()
         {
             _loader = new DataLoader();
+            _cookie = new CookieManager();
         }
 
         public ActionResult Login(Login login)
@@ -31,7 +32,7 @@ namespace MasterShop20.Website.Controllers
             if (nutzer == null)
                 return View("Error");
 
-            Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
+            _cookie.SetUserCookie(nutzer.IdNutzer);
             return View("../Home/Index");
         }
 
@@ -46,7 +47,7 @@ namespace MasterShop20.Website.Controllers
 
             // erstelle nutzer
             var nutzer = _loader.CreateNutzer(registration);
-            Response.Cookies.Add(new HttpCookie("user") { Value = nutzer.IdNutzer.ToString() });
+            _cookie.SetUserCookie(nutzer.IdNutzer);
 
             return View("../Home/Index");
         }

@@ -52,7 +52,7 @@ namespace MasterShop20.Website.Controllers
         {
             _setNutzer();
             IQueryable<Nutzer> query = _loader.DatabaseDataContext.Nutzers.Where(n => n.IdNutzer == _nutzerID);
-            foreach ( Nutzer user in query)
+            foreach (Nutzer user in query)
             {
                 user.Name = name;
                 user.Vorname = vorname;

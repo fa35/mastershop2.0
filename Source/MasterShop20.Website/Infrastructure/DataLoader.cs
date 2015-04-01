@@ -8,7 +8,7 @@ using NLog;
 
 namespace MasterShop20.Website.Infrastructure
 {
-    public class DataLoader
+    public class DataLoader : ILoader
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -70,7 +70,8 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Nutzers.FirstOrDefault(p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
+                return DatabaseDataContext.Nutzers
+                    .FirstOrDefault(p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
             {
@@ -80,9 +81,9 @@ namespace MasterShop20.Website.Infrastructure
 
         }
 
-        public Nutzer CreateNutzer(Registration regist)
+        public Nutzer CreateNutzer(Registration registration)
         {
-            var nutzer = new ModelsConverter().RegistrationToNutzer(regist);
+            var nutzer = new ModelsConverter().RegistrationToNutzer(registration);
 
             try
             {
@@ -97,23 +98,23 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
-        public Nutzer GetNutzerById(int userId)
+        public Nutzer GetNutzerById(int idUser)
         {
-            Nutzer nutzer = DatabaseDataContext.Nutzers.FirstOrDefault(n => n.IdNutzer == userId);
-            return nutzer;
+            return DatabaseDataContext.Nutzers.FirstOrDefault(n => n.IdNutzer == idUser);
         }
 
-        public List<Artikel> GetArticlesByIds(List<int> articleIds)
+
+        public List<Artikel> GetArticlesByIds(List<int> idsArticles)
         {
             var articles = new List<Artikel>();
 
-            foreach (var id in articleIds)
+            foreach (var id in idsArticles)
                 articles.Add(DatabaseDataContext.Artikels.FirstOrDefault(p => p.IdArtikel == id));
 
             return articles;
         }
 
-        public List<Artikel> GetArticleList(int page, int amount)
+        public List<Artikel> GetArticlesList(int page, int amount)
         {
             try
             {
@@ -126,23 +127,36 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
-        public List<Artikel> GetArticleListByGroups(int page, int amount, string subgroupName)
+        public List<Artikel> GetArticlesListByGroups(int page, int amount, string subgroupName)
         {
             try
             {
                 var subgroup = DatabaseDataContext.Untergruppes.FirstOrDefault(u => u.Titel.Equals(subgroupName));
                 if (subgroup != null)
                     return DatabaseDataContext.Artikels
-                        .Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page*amount).Take(amount).ToList();
+                        .Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page * amount).Take(amount).ToList();
                 else
-                    return GetArticleList(page, amount);
+                    return GetArticlesList(page, amount);
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, "Konnte Artikel nach UntergurppenID nicht holen", ex);
                 return null;
             }
-        } 
+        }
+
+        public Artikel GetArticleById(int idArticle)
+        {
+            try
+            {
+                return DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == idArticle);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Fatal, "ArtikelId nicht in vorhanden", ex);
+                return null;
+            }
+        }
 
 
         public Dictionary<string, List<string>> GetGroups()
@@ -151,14 +165,13 @@ namespace MasterShop20.Website.Infrastructure
 
             foreach (var hauptgruppe in DatabaseDataContext.Hauptgruppes)
             {
-                dic.Add(
-
-                    hauptgruppe.Titel,
+                var untergruppen =
                     DatabaseDataContext.Untergruppes
                     .Where(u => u.IdHauptgruppe == hauptgruppe.IdHauptgruppe)
                     .Select(p => p.Titel)
-                    .ToList()
-                );
+                    .ToList();
+
+                dic.Add(hauptgruppe.Titel, untergruppen);
             }
             return dic;
         }
@@ -176,20 +189,7 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
-        public Artikel GetArticleById(int id)
-        {
-            try
-            {
-                return DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == id);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Fatal, "ArtikelId nicht in vorhanden", ex);
-                return null;
-            }
-        }
-
-        public Bestellung GetBestellungByNutzerId(int idUser)
+        public Bestellung GetBestellungByUserId(int idUser)
         {
             try
             {
@@ -202,7 +202,7 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
 
-        public List<BestellungsDetail> GetDetailsByBestellungId(int idBestellung)
+        public List<BestellungsDetail> GetDetailsByBestellungsId(int idBestellung)
         {
             try
             {
@@ -215,4 +215,5 @@ namespace MasterShop20.Website.Infrastructure
             }
         }
     }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Infrastructure;
@@ -13,38 +14,30 @@ namespace MasterShop20.Website.Controllers
         // GET: /Home/
 
         private DataLoader _loader;
+        private CookieManager _cookies;
 
         public HomeController()
         {
             _loader = new DataLoader();
-            RemoveCookies();
+
+            _cookies = new CookieManager();
+            _cookies.RemoveCookies();
         }
+
 
         public ActionResult Index()
         {
             return View();
         }
 
-        private void RemoveCookies()
-        {
-            if (Request != null)
-            {
-                if (Request.Cookies["articles"] != null)
-                    Response.Cookies["articles"].Expires = DateTime.Now.AddDays(-1);
-
-                if (Request.Cookies["user"] != null)
-                    Response.Cookies["user"].Expires = DateTime.Now.AddDays(-1);
-            }
-        }
-
         public ActionResult GetArticleViewModels(int page = 0, int amount = 10, string subgroupName = "")
         {
             var articles = new List<Artikel>();
-            
+
             if (!string.IsNullOrWhiteSpace(subgroupName))
-                articles = _loader.GetArticleListByGroups(page, amount, subgroupName);
+                articles = _loader.GetArticlesListByGroups(page, amount, subgroupName);
             else
-                articles = _loader.GetArticleList(page, amount);
+                articles = _loader.GetArticlesList(page, amount);
 
             var vms = new List<ArticleViewModel>();
 
@@ -75,7 +68,7 @@ namespace MasterShop20.Website.Controllers
 
         public ActionResult Logout()
         {
-            RemoveCookies();
+            _cookies.RemoveCookies();
             return View("Index");
         }
 

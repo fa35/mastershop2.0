@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ namespace MasterShop20.DbDataTool
     class Program
     {
         static readonly string _datadir = AppDomain.CurrentDomain.BaseDirectory + "DbData";
+
 
         private static void SaveDbEntriesAsJson(ShopDbDataContext context)
         {
@@ -66,9 +68,8 @@ namespace MasterShop20.DbDataTool
 
         static void Main(string[] args)
         {
-            var connectionstring = ConfigurationManager.AppSettings["connection"];
-            var context = new ShopDbDataContext(connectionstring);
-
+            var conStr = ConfigurationManager.AppSettings["connection"];
+            var context = new ShopDbDataContext(conStr);
             // todo: Methoden vervollständigen wenn mehr Tabellen / Tabelleneinträge kommen die wichtig sind
             // SaveDbEntriesAsJson(context);
 
@@ -88,7 +89,6 @@ namespace MasterShop20.DbDataTool
             Console.WriteLine("Mit irgendeiner Taste beenden");
             Console.ReadKey();
         }
-
 
     }
 }
