@@ -77,9 +77,12 @@ namespace MasterShop20.DbDataTool
             {
                 if (!Directory.Exists(_datadir) || !Directory.EnumerateFiles(_datadir, "*.json").Any())
                     Console.WriteLine("Du musst das Projekt erst einmal bauen!" + Environment.NewLine +
-                        Environment.NewLine + "Bauen + nochmal starten");
+                                      Environment.NewLine + "Bauen + nochmal starten");
                 else
+                {
                     LoadDbEntriesInDb(context);
+                    Console.WriteLine("Daten importiert - Fertig");
+                }           
             }
             catch (Exception ex)
             {

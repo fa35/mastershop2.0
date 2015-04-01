@@ -1,0 +1,48 @@
+DIE DATENBANK:
+------------------------------------
+Die mastershopdb_030315.sql öffnen, den String bei den beiden FILENAME abändern: 
+'EUERPFAD\Microsoft SQL Server\MSSQL11.SQLEXPRESSSERVER\MSSQL\DATA\MasterShopDb.mdf'
+das 'EUERPFAD' müsste sowas wie 'c:\program' sein
+
+Dann das Management Studio öffnen und im Abfragefenster den abgeänderten Code reinkopieren und ausführen lassen 
+
+------------------------------------
+
+DER CONNECTIONSTRING:
+------------------------------------
+In der 
+
+- App.config des DbDataTools (...mastershop20\Source\MasterShop20.DbDataTool\App.config)
+- Web.config der Website (...mastershop20\Source\MasterShop20.Website\Web.conifg)
+
+mus der Connection-String vervollständigt werden. Der eigentliche String wird später im Code gesetzt, allergins
+über die 'AppSettings'. Es muss dennoch nur das Value des Keyes 'connection' angepasst werden.
+
+Also die App-/Web.config öffnen und den Value-Teil anpassen:
+
+<add key="connection" value="Data Source=SERVER;Initial Catalog=MasterShopDb;Integrated Security=True"/>
+
+Hier muss der Server eingetragen werden, also aus 'SERVER' muss sowas wie 'MeinRechner\SQLEXPRESSSERVER' werden.
+Dann muss das 'Integrated Security' angepasst werden. Wird einen Nutzer mit Passwort gesetzt und nicht die
+Windows Autorentifizierung genutzt, so muss dort 'User Id=NutzerName; Password=12345678;' stehen. 
+
+------------------------------------
+
+DIE TESTDATEN:
+------------------------------------
+
+Die Testdaten kommen über das DbDataTool in die Datenbank. Zuerst sollte die komplette Solution gebaut
+werde. Also mit rechtsklick auf die Solution das ContextMenu öffnen und auf 'Build Solution' klicken.
+
+Anschließend das DbDataTool-Projekt als ausführen - per rechtslick auf das Projekt; Dann im ContextMenu
+auf 'Debug' und anschließend auf 'start new instance'. Der Consolen-Anweisung folgen bis 'Daten importiert - Fertig'
+erscheint.
+
+Nun könnte man überprüfen, ob das Importieren tatsächlich funktioniert hat, indem man das Management Studio öffnen
+und nachsieht. Sollte aber nicht notwedig sein.
+
+------------------------------------
+
+WEBSITE:
+------------------------------------
+Die Website kann nun z.B. über F5 gestartet werden.
