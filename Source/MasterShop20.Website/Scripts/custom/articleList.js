@@ -12,7 +12,11 @@ $(document).ready(function () {
     });
 });
 
+
 function nextPage(page) {
+
+    // diese Funktion soll nur die Funktionalität testen und ist nicht dauerhaft geplant
+    
     $.ajax({
         type: "POST",
         url: "/Home/GetArticleViewModels",
@@ -38,6 +42,22 @@ function getArticleViewModelsByGroup(subgroupname) {
         }
     });
 }
+
+function addArticleToCart(articleId) {
+
+    $.ajax({
+        type: "POST",
+        url: "/Cart/AddArticleToCart",
+        data: {
+            articleId: articleId
+        },
+        success: function () {
+            // show notification
+        }
+    });
+
+}
+
 
 function showArticleDescription(articleId) {
     $.ajax({
@@ -65,25 +85,4 @@ function reduceArticleDescription(articleId) {
     test += '<a href="#" onclick="showArticleDescription(' + articleId + ')"><strong>...</strong></a>';
 
     $("#" + articleId).html(test);
-
-}
-
-
-function addArticleToCart(articleId) {
-
-    $.ajax({
-        type: "POST",
-        url: "/Cart/AddArticleToCart",
-        data: {
-            articleId: articleId
-        },
-        success: function (result) {
-
-            // if result == true -> article added else article can't be addeded
-
-            // show notification
-
-        }
-    });
-
 }

@@ -15,8 +15,7 @@ namespace MasterShop20.Website.Infrastructure
         Nutzer GetNutzerById(int idUser);
 
         List<Artikel> GetArticlesByIds(List<int> idsArticles);
-        List<Artikel> GetArticlesList(int page, int amount);
-        List<Artikel> GetArticlesListByGroups(int page, int amount, string subgroupName);
+        List<Artikel> GetArticlesList(int page, int amount, string subgroupName);
         Artikel GetArticleById(int idArticle);
 
         Dictionary<string, List<string>> GetGroups();

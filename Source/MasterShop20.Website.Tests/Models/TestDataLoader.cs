@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.Helpers;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
@@ -49,8 +48,30 @@ namespace MasterShop20.Website.Tests.Models
             }
         }
 
+        public List<Artikel> GetArticlesByIds(List<int> idsArticles)
+        {
+            var resultList = new List<Artikel>();
 
+            foreach (int id in idsArticles)
+                resultList.Add(_articles.FirstOrDefault(a => a.IdArtikel == id));
 
+            return resultList;
+        }
+
+        public List<Artikel> GetArticlesList(int page = 0, int amount = 10, string subgroupName = "")
+        {
+            return _articles.Skip(page * 1).Take(amount).ToList();
+        }
+
+        public Artikel GetArticleById(int idArticle)
+        {
+            return _articles.FirstOrDefault(a => a.IdArtikel == idArticle);
+        }
+
+        public Registration GetRegistrationTestData()
+        {
+            return _registration;
+        }
 
         public bool CheckIfUserExists(Login login)
         {
@@ -77,30 +98,6 @@ namespace MasterShop20.Website.Tests.Models
             throw new NotImplementedException();
         }
 
-        public List<Artikel> GetArticlesByIds(List<int> idsArticles)
-        {
-            var resultList = new List<Artikel>();
-
-            foreach (int id in idsArticles)
-                resultList.Add(_articles.FirstOrDefault(a => a.IdArtikel == id));
-
-            return resultList;
-        }
-
-        public List<Artikel> GetArticlesList(int page = 0, int amount = 10)
-        {
-            return _articles.Skip(page * 1).Take(amount).ToList();
-        }
-
-        public List<Artikel> GetArticlesListByGroups(int page, int amount, string subgroupName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Artikel GetArticleById(int idArticle)
-        {
-            return _articles.FirstOrDefault(a => a.IdArtikel == idArticle);
-        }
 
         public Dictionary<string, List<string>> GetGroups()
         {
@@ -120,11 +117,6 @@ namespace MasterShop20.Website.Tests.Models
         public List<BestellungsDetail> GetDetailsByBestellungsId(int idBestellung)
         {
             throw new NotImplementedException();
-        }
-
-        public Registration GetRegistrationTestData()
-        {
-            return _registration;
         }
     }
 }

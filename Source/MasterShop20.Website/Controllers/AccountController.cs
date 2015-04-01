@@ -6,7 +6,6 @@ namespace MasterShop20.Website.Controllers
 {
     public class AccountController : Controller
     {
-        //
         // GET: /Account/
 
         private DataLoader _loader;
@@ -17,6 +16,7 @@ namespace MasterShop20.Website.Controllers
             _loader = new DataLoader();
             _cookie = new CookieManager();
         }
+
 
         public ActionResult Login(Login login)
         {

@@ -1,100 +1,56 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using MasterShop20.Website.Database;
+using MasterShop20.Website.Converter;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
-using Newtonsoft.Json;
 
 namespace MasterShop20.Website.Controllers
 {
     public class CartController : Controller // Warenkorb
     {
-        //
         // GET: /Cart/
 
-        private DataLoader _organizer;
+        private DataLoader _loader;
+        private CookieManager _manager;
+        private ModelsConverter _converter;
 
         public CartController()
         {
-            _organizer = new DataLoader();
+            _loader = new DataLoader();
+            _manager = new CookieManager();
+            _converter = new ModelsConverter(_loader);
         }
 
 
         public ActionResult Index()
-        {
+        {   
+            // hole Ids der Artikel in der serialisierten String-Liste
+            var stringList = _manager.LoadArticlesIds();
 
-            // prüfe ob articles cookie gesetzt ist
-            if (Request.Cookies["articles"] == null)
+            if(stringList == null)
                 return View("../Home/Index");
-
-            var ids = LoadArticlesIdFromCookie();
-
-            var articles = new List<Artikel>();
-
-            foreach (var id in ids)
-                articles.Add(_organizer.GetArticleById(id));
 
             var avms = new List<ArticleViewModel>();
 
-            foreach (var art in articles)
+            foreach (var stringId in stringList)
             {
-                var steuersatz = _organizer.GetSteuersatz(art.IdSteuersatz);
-                avms.Add(new ArticleViewModel().ToViewModel(art, steuersatz));
+                var article = _loader.GetArticleById(int.Parse(stringId));
+                avms.Add(_converter.ConvertArticleToArticleViewModel(article));
             }
 
             return View("Index", avms);
-
         }
 
 
-        public bool AddArticleToCart(int articleId)
+        public void AddArticleToCart(int articleId)
         {
-            var idsList = new List<int>();
-
-            // prüfe ob articles cookie gesetzt ist, wenn ja hole ids aus cookie
-            if (Request.Cookies["articles"] != null)
-                idsList = LoadArticlesIdFromCookie();
-
-            idsList.Add(articleId);
-
-            // füge neues cookie articles hinzu bzw. überschreibe wenn schon da
-            SaveArticlesIdInCookie(idsList);
-
-            return true;
+            _manager.SetArticleIdInCookie(articleId);
         }
 
-
-        public bool RemoveArticleFromCart(int articleId)
+        public void RemoveArticleFromCart(int articleId)
         {
-            // prüfe ob articles cookie gesetzt ist
-            if (Request.Cookies["articles"] == null)
-                return false;
-
-            // deserializiere die bisherigen article ids aus dem json im cookie
-            var list = LoadArticlesIdFromCookie();
-
-            list.Remove(articleId);
-
-            SaveArticlesIdInCookie(list);
-
-            return true;
+            _manager.RemoveArticleIdInCookie(articleId);
         }
 
-
-        private void SaveArticlesIdInCookie(List<int> list)
-        {
-            var content = JsonConvert.SerializeObject(list);
-            Response.Cookies.Add(new HttpCookie("articles") { Value = content });
-        }
-
-        private List<int> LoadArticlesIdFromCookie()
-        {
-            var articlesId = Request.Cookies["articles"].Value;
-            var ids = JsonConvert.DeserializeObject<List<int>>(articlesId);
-
-            return ids;
-        }
     }
 }

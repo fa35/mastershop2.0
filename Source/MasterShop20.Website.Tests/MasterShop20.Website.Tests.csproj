@@ -100,10 +100,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MasterShop20.DbDataTool\MasterShop20.DbDataTool.csproj">
-      <Project>{d8d7d507-391e-4b4a-a141-2300631751eb}</Project>
-      <Name>MasterShop20.DbDataTool</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MasterShop20.Website\MasterShop20.Website.csproj">
       <Project>{948c42e8-1e8a-46d6-a5f8-8ae9db31f21b}</Project>
       <Name>MasterShop20.Website</Name>

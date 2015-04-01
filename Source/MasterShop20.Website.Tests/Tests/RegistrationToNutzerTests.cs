@@ -18,7 +18,7 @@ namespace MasterShop20.Website.Tests.Tests
         {
             _loader = new TestDataLoader();
             _registration = _loader.GetRegistrationTestData();
-            _converter = new ModelsConverter();
+            _converter = new ModelsConverter(_loader);
         }
 
         [Test]

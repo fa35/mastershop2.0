@@ -146,8 +146,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CookieManager.cs" />
     <Compile Include="Infrastructure\DatabaseManager.cs" />
     <Compile Include="Infrastructure\DataLoader.cs" />
+    <Compile Include="Infrastructure\ILoader.cs" />
     <Compile Include="Models\ArticleViewModel.cs" />
     <Compile Include="Models\DetailsViewModel.cs" />
     <Compile Include="Models\LoginRegistration.cs" />
@@ -224,6 +226,9 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Scripts\bootstrap\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -12,15 +12,15 @@ namespace MasterShop20.Website.Infrastructure
     {
         private Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public MasterShopDataContext DatabaseDataContext;
+        private MasterShopDataContext _databaseDc;
 
         public DataLoader()
         {
             try
             {
-                DatabaseDataContext = new DatabaseManager().GetDataContext();
+                _databaseDc = new DatabaseManager().GetDataContext();
 
-                if (DatabaseDataContext == null)
+                if (_databaseDc == null)
                     return;
             }
             catch (Exception ex)
@@ -37,7 +37,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Nutzers.Any(n => n.EMail.Equals(login.MailAddress) && n.Passwort.Equals(login.Password));
+                return _databaseDc.Nutzers.Any(n => n.EMail.Equals(login.MailAddress) && n.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace MasterShop20.Website.Infrastructure
             var nutzers = new List<Nutzer>();
             try
             {
-                nutzers = DatabaseDataContext.Nutzers.Where(p => p.EMail.Equals(regist.MailAddress)).ToList();
+                nutzers = _databaseDc.Nutzers.Where(p => p.EMail.Equals(regist.MailAddress)).ToList();
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Nutzers
+                return _databaseDc.Nutzers
                     .FirstOrDefault(p => p.EMail.Equals(login.MailAddress) && p.Passwort.Equals(login.Password));
             }
             catch (Exception ex)
@@ -83,12 +83,12 @@ namespace MasterShop20.Website.Infrastructure
 
         public Nutzer CreateNutzer(Registration registration)
         {
-            var nutzer = new ModelsConverter().RegistrationToNutzer(registration);
+            var nutzer = new ModelsConverter(this).RegistrationToNutzer(registration);
 
             try
             {
-                DatabaseDataContext.Nutzers.InsertOnSubmit(nutzer);
-                DatabaseDataContext.SubmitChanges();
+                _databaseDc.Nutzers.InsertOnSubmit(nutzer);
+                _databaseDc.SubmitChanges();
                 return nutzer;
             }
             catch (Exception ex)
@@ -100,43 +100,40 @@ namespace MasterShop20.Website.Infrastructure
 
         public Nutzer GetNutzerById(int idUser)
         {
-            return DatabaseDataContext.Nutzers.FirstOrDefault(n => n.IdNutzer == idUser);
+            return _databaseDc.Nutzers.FirstOrDefault(n => n.IdNutzer == idUser);
         }
 
+        public void UpdateNutzer(Nutzer nutzer)
+        {
+            // es die Veränderungen wurden direkt auf dem Nutzer-Objekt gemacht, somit müssen die Veränderungen nur noch gesubmittet werden
+            _databaseDc.SubmitChanges();
+        }
 
         public List<Artikel> GetArticlesByIds(List<int> idsArticles)
         {
             var articles = new List<Artikel>();
 
             foreach (var id in idsArticles)
-                articles.Add(DatabaseDataContext.Artikels.FirstOrDefault(p => p.IdArtikel == id));
+                articles.Add(_databaseDc.Artikels.FirstOrDefault(p => p.IdArtikel == id));
 
             return articles;
         }
 
-        public List<Artikel> GetArticlesList(int page, int amount)
+        public List<Artikel> GetArticlesList(int page, int amount, string subgroupName)
         {
             try
             {
-                return DatabaseDataContext.Artikels.Skip(page * amount).Take(amount).ToList();
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Error, "Konnte Artikel nicht holen", ex);
-                return null;
-            }
-        }
-
-        public List<Artikel> GetArticlesListByGroups(int page, int amount, string subgroupName)
-        {
-            try
-            {
-                var subgroup = DatabaseDataContext.Untergruppes.FirstOrDefault(u => u.Titel.Equals(subgroupName));
-                if (subgroup != null)
-                    return DatabaseDataContext.Artikels
-                        .Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page * amount).Take(amount).ToList();
+                if (string.IsNullOrWhiteSpace(subgroupName))
+                {
+                    return _databaseDc.Artikels.Skip(page * amount).Take(amount).ToList();
+                }
                 else
-                    return GetArticlesList(page, amount);
+                {
+                    var subgroup = _databaseDc.Untergruppes.FirstOrDefault(u => u.Titel.Equals(subgroupName));
+                    
+                    return _databaseDc.Artikels
+                        .Where(a => a.IdUntergruppe == subgroup.IdUntergruppe).Skip(page * amount).Take(amount).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -149,7 +146,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Artikels.FirstOrDefault(a => a.IdArtikel == idArticle);
+                return _databaseDc.Artikels.FirstOrDefault(a => a.IdArtikel == idArticle);
             }
             catch (Exception ex)
             {
@@ -163,10 +160,10 @@ namespace MasterShop20.Website.Infrastructure
         {
             var dic = new Dictionary<string, List<string>>();
 
-            foreach (var hauptgruppe in DatabaseDataContext.Hauptgruppes)
+            foreach (var hauptgruppe in _databaseDc.Hauptgruppes)
             {
                 var untergruppen =
-                    DatabaseDataContext.Untergruppes
+                    _databaseDc.Untergruppes
                     .Where(u => u.IdHauptgruppe == hauptgruppe.IdHauptgruppe)
                     .Select(p => p.Titel)
                     .ToList();
@@ -180,7 +177,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
+                return _databaseDc.Steuersatzs.FirstOrDefault(s => s.IdSteuersatz == idSteuersatz).Steuersatz1;
             }
             catch (Exception ex)
             {
@@ -193,7 +190,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.Bestellungs.FirstOrDefault(p => p.IdNutzer == idUser && p.Bezahlt == false);
+                return _databaseDc.Bestellungs.FirstOrDefault(p => p.IdNutzer == idUser && p.Bezahlt == false);
             }
             catch (Exception ex)
             {
@@ -206,7 +203,7 @@ namespace MasterShop20.Website.Infrastructure
         {
             try
             {
-                return DatabaseDataContext.BestellungsDetails.Where(d => d.IdBestellung == idBestellung).ToList();
+                return _databaseDc.BestellungsDetails.Where(d => d.IdBestellung == idBestellung).ToList();
             }
             catch (Exception ex)
             {

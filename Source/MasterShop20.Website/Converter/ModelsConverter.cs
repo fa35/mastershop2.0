@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MasterShop20.Website.Database;
+using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
 using NLog;
 
@@ -7,6 +9,13 @@ namespace MasterShop20.Website.Converter
 {
     public class ModelsConverter
     {
+        private ILoader _loader;
+
+        public ModelsConverter(ILoader loader)
+        {
+            _loader = loader;
+        }
+
         public Nutzer RegistrationToNutzer(Registration registration)
         {
             try
@@ -42,5 +51,11 @@ namespace MasterShop20.Website.Converter
         }
 
 
+        public ArticleViewModel ConvertArticleToArticleViewModel(Artikel article)
+        {
+            var satz = _loader.GetSteuersatz(article.IdSteuersatz);
+            return new ArticleViewModel().ToViewModel(article, satz);
+            
+        } 
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using MasterShop20.Website.Converter;
 using MasterShop20.Website.Database;
 using MasterShop20.Website.Infrastructure;
 using MasterShop20.Website.Models;
@@ -14,14 +12,17 @@ namespace MasterShop20.Website.Controllers
         // GET: /Home/
 
         private DataLoader _loader;
-        private CookieManager _cookies;
+        private CookieManager _manager;
+        private ModelsConverter _converter;
 
         public HomeController()
         {
             _loader = new DataLoader();
 
-            _cookies = new CookieManager();
-            _cookies.RemoveCookies();
+            _manager = new CookieManager();
+            _manager.RemoveCookies();
+
+            _converter = new ModelsConverter(_loader);
         }
 
 
@@ -30,48 +31,54 @@ namespace MasterShop20.Website.Controllers
             return View();
         }
 
+
         public ActionResult GetArticleViewModels(int page = 0, int amount = 10, string subgroupName = "")
         {
-            var articles = new List<Artikel>();
-
-            if (!string.IsNullOrWhiteSpace(subgroupName))
-                articles = _loader.GetArticlesListByGroups(page, amount, subgroupName);
-            else
-                articles = _loader.GetArticlesList(page, amount);
+            var articles = _loader.GetArticlesList(page, amount, subgroupName);
 
             var vms = new List<ArticleViewModel>();
 
-            foreach (var artikel in articles)
-            {
-                var satz = _loader.GetSteuersatz(artikel.IdSteuersatz);
-                vms.Add(new ArticleViewModel().ToViewModel(artikel, satz));
-            }
+            foreach (var article in articles)
+                vms.Add(_converter.ConvertArticleToArticleViewModel(article));
+            
             return PartialView("_ArticlesList", vms);
         }
 
+
         public string GetArticleDescription(string articleId)
         {
-            var id = 0;
+            int id;
             int.TryParse(articleId, out id);
-
             var article = _loader.GetArticleById(id);
-
+            // wenn article != null dann return article.Bescheschreibung, sonst ""
             return article != null ? article.Beschreibung : "";
         }
 
+
         public ActionResult GetNavigationGroups()
         {
-            var dic = _loader.GetGroups();
-
-            return PartialView("_NavigationGroups", dic);
+            return PartialView("_NavigationGroups", _loader.GetGroups());
         }
+
 
         public ActionResult Logout()
         {
-            _cookies.RemoveCookies();
+            _manager.RemoveCookies();
             return View("Index");
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult Registration()
+        {
+            return View();
+        }
+
+
+        #region Impressum, Datenschutz, AGBs
 
         public ActionResult PrivacyPolicy()
         {
@@ -88,16 +95,7 @@ namespace MasterShop20.Website.Controllers
             return View("GeneralBusinessTerms");
         }
 
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        public ActionResult Registration()
-        {
-            return View();
-        }
+        #endregion
 
     }
 

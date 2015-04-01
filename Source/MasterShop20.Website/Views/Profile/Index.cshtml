@@ -1,5 +1,4 @@
-﻿@using System.Collections.Concurrent
-@using System.Web.Mvc.Html
+﻿@using System.Web.Mvc.Html
 @model MasterShop20.Website.Database.Nutzer
 
 @{
@@ -7,14 +6,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{/*
-    <script>
-        setUserId(@Model.IdNutzer)
-    </script>
-*/}
 <h2>Profil von @Model.Vorname @Model.Name</h2>
+
 <div>
-@using (Html.BeginForm("handle_form","Profile"))
+@using (Html.BeginForm("UpdateNutzerInformation","Profile"))
 {
     <fieldset>
         <legend>Personalia:</legend>
