@@ -1,8 +1,7 @@
-# mastershop20
-AS project now in asp.net via razor
+## mastershop20
 
-### twitter's bootstrap
-#### information about : http://getbootstrap.com/getting-started
+#### webproject using asp .net mvc 4 and razor
 
+#### using twitter's bootstrap - informations here: http://getbootstrap.com/getting-started
+#### read infos in scripts&info directory, start with how_to_db.txt
 
-# read infos in scripts&info directory, start with how_to_db.txt
