@@ -1,10 +1,10 @@
 DIE DATENBANK:
 ------------------------------------
-Die mastershopdb_030315.sql öffnen, den String bei den beiden FILENAME abändern: 
+Die mastershopdb_030315.sql Ã¶ffnen, den String bei den beiden FILENAME abÃ¤ndern: 
 'EUERPFAD\Microsoft SQL Server\MSSQL11.SQLEXPRESSSERVER\MSSQL\DATA\MasterShopDb.mdf'
-das 'EUERPFAD' müsste sowas wie 'c:\program' sein
+das 'EUERPFAD' mÃ¼sste sowas wie 'c:\program' sein
 
-Dann das Management Studio öffnen und im Abfragefenster den abgeänderten Code reinkopieren und ausführen lassen 
+Dann das Management Studio Ã¶ffnen und im Abfragefenster den abgeÃ¤nderten Code reinkopieren und ausfÃ¼hren lassen 
 
 ------------------------------------
 
@@ -15,10 +15,10 @@ In der
 - App.config des DbDataTools (...mastershop20\Source\MasterShop20.DbDataTool\App.config)
 - Web.config der Website (...mastershop20\Source\MasterShop20.Website\Web.conifg)
 
-mus der Connection-String vervollständigt werden. Der eigentliche String wird später im Code gesetzt, allergins
-über die 'AppSettings'. Es muss dennoch nur das Value des Keyes 'connection' angepasst werden.
+mus der Connection-String vervollstÃ¤ndigt werden. Der eigentliche String wird spÃ¤ter im Code gesetzt, allergins
+Ã¼ber die 'AppSettings'. Es muss dennoch nur das Value des Keyes 'connection' angepasst werden.
 
-Also die App-/Web.config öffnen und den Value-Teil anpassen:
+Also die App-/Web.config Ã¶ffnen und den Value-Teil anpassen:
 
 <add key="connection" value="Data Source=SERVER;Initial Catalog=MasterShopDb;Integrated Security=True"/>
 
@@ -31,18 +31,18 @@ Windows Autorentifizierung genutzt, so muss dort 'User Id=NutzerName; Password=1
 DIE TESTDATEN:
 ------------------------------------
 
-Die Testdaten kommen über das DbDataTool in die Datenbank. Zuerst sollte die komplette Solution gebaut
-werde. Also mit rechtsklick auf die Solution das ContextMenu öffnen und auf 'Build Solution' klicken.
+Die Testdaten kommen Ã¼ber das DbDataTool in die Datenbank. Zuerst sollte die komplette Solution gebaut
+werde. Also mit rechtsklick auf die Solution das ContextMenu Ã¶ffnen und auf 'Build Solution' klicken.
 
-Anschließend das DbDataTool-Projekt als ausführen - per rechtslick auf das Projekt; Dann im ContextMenu
-auf 'Debug' und anschließend auf 'start new instance'. Der Consolen-Anweisung folgen bis 'Daten importiert - Fertig'
+AnschlieÃŸend das DbDataTool-Projekt als ausfÃ¼hren - per rechtslick auf das Projekt; Dann im ContextMenu
+auf 'Debug' und anschlieÃŸend auf 'start new instance'. Der Consolen-Anweisung folgen bis 'Daten importiert - Fertig'
 erscheint.
 
-Nun könnte man überprüfen, ob das Importieren tatsächlich funktioniert hat, indem man das Management Studio öffnen
+Nun kÃ¶nnte man Ã¼berprÃ¼fen, ob das Importieren tatsÃ¤chlich funktioniert hat, indem man das Management Studio Ã¶ffnen
 und nachsieht. Sollte aber nicht notwedig sein.
 
 ------------------------------------
 
 WEBSITE:
 ------------------------------------
-Die Website kann nun z.B. über F5 gestartet werden.
+Die Website kann nun z.B. Ã¼ber F5 gestartet werden.
